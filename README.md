@@ -52,10 +52,16 @@ To migrate database
 docker-compose run --rm artisan migrate
 ```
 
+To Run PHP Insights
+```bash
+docker-compose run --rm artisan insights
+```
+
 To stop container
 ```bash
 docker-compose down
 ```
+
 ## Acknowledgements
 
  - [Docker-Compose-Laravel](https://github.com/aschmelyun/docker-compose-laravel)
