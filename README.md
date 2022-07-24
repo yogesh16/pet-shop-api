@@ -57,6 +57,11 @@ To Run PHP Insights
 docker-compose run --rm artisan insights
 ```
 
+To Run Larastan
+```bash
+docker-compose run --rm composer run phpstant
+```
+
 To stop container
 ```bash
 docker-compose down
