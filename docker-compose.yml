@@ -68,7 +68,7 @@ services:
         depends_on:
             - php
         user: root
-        entrypoint: ['composer', '--ignore-platform-reqs']
+        entrypoint: ['composer']
         networks:
             - laravel
 
