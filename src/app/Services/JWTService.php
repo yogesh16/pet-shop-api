@@ -36,7 +36,7 @@ class JWTService
         return $config;
     }
 
-    public static function getToken(string $userId) : string
+    public static function getToken(string $userUuid) : string
     {
         $config = self::getConfig();
         $now    = new \DateTimeImmutable();
@@ -48,7 +48,7 @@ class JWTService
             ->issuedAt($now)
             ->canOnlyBeUsedAfter($now->modify('+1 minute'))
             ->expiresAt($now->modify('+1 hour'))
-            ->withClaim('user_uuid', $userId)
+            ->withClaim('user_uuid', $userUuid)
             ->withHeader('foo', 'bar')
             ->getToken($config->signer(), $config->signingKey())
             ->toString();
@@ -68,7 +68,7 @@ class JWTService
         // @phpstan-ignore-next-line
         $claims = $parsed->claims();
         if(isset($claims)){
-            return User::where('id', $claims->get('user_uuid'))->first();
+            return User::where('uuid', $claims->get('user_uuid'))->first();
         }
         return null;
     }

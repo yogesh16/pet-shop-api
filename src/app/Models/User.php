@@ -4,13 +4,16 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Services\JWTService;
+use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
+    use Notifiable;
+    use Uuids;
 
     /**
      * The attributes that are mass assignable.
@@ -18,9 +21,17 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'uuid',
+        'first_name',
+        'last_name',
+        'is_admin',
         'email',
         'password',
+        'avatar',
+        'address',
+        'phone_number',
+        'is_marketing',
+        'last_login_at'
     ];
 
     /**
@@ -40,10 +51,11 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'last_login_at' => 'datetime'
     ];
 
     public function generateToken() : string
     {
-        return JWTService::getToken(strval($this->id));
+        return JWTService::getToken($this->uuid);
     }
 }

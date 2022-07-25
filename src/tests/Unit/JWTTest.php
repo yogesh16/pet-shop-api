@@ -26,6 +26,6 @@ class JWTTest extends TestCase
 
         $newUser = JWTService::parseToken($token);
 
-        $this->assertEquals($user->id, $newUser->id);
+        $this->assertEquals($user->uuid, $newUser->uuid);
     }
 }
