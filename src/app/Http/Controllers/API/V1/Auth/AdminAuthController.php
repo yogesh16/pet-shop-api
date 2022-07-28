@@ -5,11 +5,11 @@ namespace App\Http\Controllers\API\V1\Auth;
 
 use App\Http\Controllers\API\V1\BaseController;
 use App\Http\Requests\LoginRequest;
-use App\Services\JWTService;
 use App\Traits\ApiResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
-class AuthController extends BaseController
+class AdminAuthController extends BaseController
 {
     use ApiResponse;
 
@@ -63,6 +63,8 @@ class AuthController extends BaseController
      *         {"api_key": {}}
      *     }
      * )
+     * @param LoginRequest $request
+     * @return JsonResponse
      */
     public function login(LoginRequest $request)
     {

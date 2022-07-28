@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\V1\Auth\AdminAuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => ['api'], 'prefix' => 'v1/admin'], function(){
+    Route::post('/login', [AdminAuthController::class, 'login']);
+
+    //Only authorized request can access following API Endpoints.
+    Route::group(['middleware' => ['auth:api']], function(){
+
+    });
 });
-
-Route::post('v1/admin/login', [\App\Http\Controllers\API\V1\Auth\AuthController::class, 'login']);
-
