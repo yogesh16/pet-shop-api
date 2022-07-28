@@ -55,7 +55,7 @@ class JWTService
 
         $jwt = [
             'user_id' => $user->id,
-            'unique_id' => $token,
+            'access_token' => $token,
             'token_title' => '',
         ];
         JwtToken::create($jwt);
