@@ -54,8 +54,13 @@ class User extends Authenticatable
         'last_login_at' => 'datetime'
     ];
 
+    public function tokens()
+    {
+        return $this->hasMany(JwtToken::class);
+    }
+
     public function generateToken() : string
     {
-        return JWTService::getToken($this->uuid);
+        return JWTService::getToken($this);
     }
 }

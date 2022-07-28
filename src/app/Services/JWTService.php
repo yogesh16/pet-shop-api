@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\Models\JwtToken;
 use Illuminate\Support\Facades\Log;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer;
@@ -36,22 +37,30 @@ class JWTService
         return $config;
     }
 
-    public static function getToken(string $userUuid) : string
+    public static function getToken(User $user) : string
     {
         $config = self::getConfig();
         $now    = new \DateTimeImmutable();
 
-        return $config
+        $token = $config
             ->builder()
             ->issuedBy(config('app.url'))
             ->permittedFor(config('app.url'))
             ->issuedAt($now)
             ->canOnlyBeUsedAfter($now->modify('+1 minute'))
             ->expiresAt($now->modify('+1 hour'))
-            ->withClaim('user_uuid', $userUuid)
-            ->withHeader('foo', 'bar')
+            ->withClaim('user_uuid', $user->uuid)
             ->getToken($config->signer(), $config->signingKey())
             ->toString();
+
+        $jwt = [
+            'user_id' => $user->id,
+            'unique_id' => $token,
+            'token_title' => '',
+        ];
+        JwtToken::create($jwt);
+
+        return $token;
     }
 
     public static function parseToken(string $token) : User|null

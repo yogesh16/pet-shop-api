@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Extensions\AccessTokenGuard;
+use App\Extensions\JWTToUserProvider;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +28,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Auth::extend('jwt', function ($app, $name, array $config){
+            $userProvider = app(JWTToUserProvider::class);
+            $request = app('request');
+
+            return new AccessTokenGuard($userProvider, $request, $config);
+        });
     }
 }
