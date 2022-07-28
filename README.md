@@ -62,6 +62,11 @@ To Run Larastan
 docker-compose run --rm composer run phpstant
 ```
 
+To Generate Swagger 
+```bash
+docker-compose run --rm artisan l5-swagger:generate
+```
+
 To stop container
 ```bash
 docker-compose down
