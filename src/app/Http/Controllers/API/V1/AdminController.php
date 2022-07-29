@@ -95,7 +95,6 @@ class AdminController extends BaseController
      */
     public function userListing(Request $request)
     {
-
         $data = User::paginate($request->all());
 
         return response()->json($data, 200);

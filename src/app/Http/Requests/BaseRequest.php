@@ -19,7 +19,9 @@ class BaseRequest extends FormRequest
                 'Invalid data',
                 $validator->errors()->toArray()
             );
-        }else{
+        }
+        else
+        {
             $response = redirect()
                 ->route('guest.login')
                 ->with('message', 'Ops! Some errors occurred')

@@ -38,8 +38,10 @@ class AccessTokenGuard implements Guard
         }
     }
 
-    public function user () {
-        if (! is_null($this->user)) {
+    public function user ()
+    {
+        if (! is_null($this->user))
+        {
             return $this->user;
         }
 
@@ -48,7 +50,8 @@ class AccessTokenGuard implements Guard
         // retrieve via token
         $token = $this->getTokenForRequest();
 
-        if ($token !== null && $token !== '') {
+        if ($token !== null && $token !== '')
+        {
             // the token was found, how you want to pass?
             $user = $this->provider->retrieveByToken($this->storageKey, $token);
         }
@@ -61,14 +64,17 @@ class AccessTokenGuard implements Guard
      *
      * @return string
      */
-    public function getTokenForRequest () {
+    public function getTokenForRequest ()
+    {
         $token = $this->request->query($this->inputKey);
 
-        if ($token !== null && $token !== '') {
+        if ($token !== null && $token !== '')
+        {
             $token = $this->request->input($this->inputKey);
         }
 
-        if ($token !== null && $token !== '') {
+        if ($token !== null && $token !== '')
+        {
             $token = $this->request->bearerToken();
         }
 
@@ -82,14 +88,17 @@ class AccessTokenGuard implements Guard
      *
      * @return bool
      */
-    public function validate (array $credentials = []) {
-        if (array_key_exists($this->inputKey, $credentials)) {
+    public function validate (array $credentials = [])
+    {
+        if (array_key_exists($this->inputKey, $credentials))
+        {
             return false;
         }
 
         $credentials = [ $this->storageKey => $credentials[$this->inputKey] ];
 
-        if ($this->provider->retrieveByCredentials($credentials)) {
+        if ($this->provider->retrieveByCredentials($credentials))
+        {
             return true;
         }
 
@@ -106,7 +115,8 @@ class AccessTokenGuard implements Guard
         // we'll ask the provider to validate the user against
         // the given credentials, and if they are in fact valid
         // we'll log the users into the application and return true.
-        if ($user && $this->hasValidCredentials($user, $credentials)) {
+        if ($user && $this->hasValidCredentials($user, $credentials))
+        {
             $this->user = $user;
             //Todo update last login time.
             return true;

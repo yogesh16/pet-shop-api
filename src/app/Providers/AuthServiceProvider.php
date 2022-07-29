@@ -14,7 +14,8 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array<class-string, class-string>
      */
-    protected $policies = [
+    protected $policies =
+    [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
     ];
 
@@ -27,7 +28,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Auth::extend('jwt', function ($app, $name, array $config){
+        Auth::extend('jwt', function ($app, $name, array $config)
+        {
             $userProvider = app(JWTToUserProvider::class);
             $request = app('request');
 

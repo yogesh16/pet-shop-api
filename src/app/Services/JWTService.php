@@ -22,13 +22,15 @@ class JWTService
 {
     private static function getConfig(): Configuration
     {
-        $config = Configuration::forAsymmetricSigner(
+        $config = Configuration::forAsymmetricSigner
+        (
             new Signer\Rsa\Sha256(),
             InMemory::file(storage_path('app/key/jwtRS256.key')),
             InMemory::file(storage_path('app/key/jwtRS256.key.pub'))
         );
 
-        $config->setValidationConstraints(
+        $config->setValidationConstraints
+        (
             new IssuedBy(config('app.url')),
             new PermittedFor(config('app.url')),
             new SignedWith($config->signer(), $config->verificationKey())
@@ -53,7 +55,8 @@ class JWTService
             ->getToken($config->signer(), $config->signingKey())
             ->toString();
 
-        $jwt = [
+        $jwt =
+        [
             'user_id' => $user->id,
             'access_token' => $token,
             'token_title' => '',
@@ -68,17 +71,23 @@ class JWTService
         $config = self::getConfig();
         $parsed = $config->parser()->parse($token);
         $constraints = $config->validationConstraints();
-        try{
+        try
+        {
             $config->validator()->assert($parsed, ...$constraints);
-        }catch(RequiredConstraintsViolated $exp){
+        }
+        catch(RequiredConstraintsViolated $exp)
+        {
             Log::error('JWTService.parseToken', [json_encode($exp)]);
             return null;
         }
         // @phpstan-ignore-next-line
         $claims = $parsed->claims();
-        if(isset($claims)){
+
+        if(isset($claims))
+        {
             return User::where('uuid', $claims->get('user_uuid'))->first();
         }
+
         return null;
     }
 }

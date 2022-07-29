@@ -12,9 +12,13 @@ trait Uuids
     protected static function boot()
     {
         parent::boot();
-        static::creating(function ($model) {
-            $model->uuid = Str::uuid()->toString();
-        });
+        static::creating
+        (
+            function ($model)
+            {
+                $model->uuid = Str::uuid()->toString();
+            }
+        );
     }
 
 }

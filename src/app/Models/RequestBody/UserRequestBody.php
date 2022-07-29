@@ -16,5 +16,4 @@ namespace App\Models\RequestBody;
  */
 class UserRequestBody
 {
-
 }
