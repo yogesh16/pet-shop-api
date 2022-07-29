@@ -11,6 +11,7 @@ class Authenticate extends Middleware
      * to when they are not authenticated.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return string|null
      */
     protected function redirectTo($request)

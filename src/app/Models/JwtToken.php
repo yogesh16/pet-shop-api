@@ -23,6 +23,7 @@ class JwtToken extends Model
 
     /**
      * Belongs to user
+     *
      * @return BelongsTo
      */
     public function user()

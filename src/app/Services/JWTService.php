@@ -15,6 +15,7 @@ use App\Models\User;
 /**
  * Class JWTService
  * @package App\Services
+ *
  * Service helper for JWT
  */
 class JWTService

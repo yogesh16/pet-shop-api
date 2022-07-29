@@ -60,6 +60,7 @@ class AdminAuthController extends BaseController
      *     )
      * )
      * @param LoginRequest $request
+     *
      * @return JsonResponse
      */
     public function login(LoginRequest $request)
@@ -105,6 +106,7 @@ class AdminAuthController extends BaseController
      *     }
      * )
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function logout(Request $request)

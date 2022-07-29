@@ -18,6 +18,7 @@ You can explore more about API and try out to learn more.",
  *         url="http://www.apache.org/licenses/LICENSE-2.0.html"
  *     )
  * )
+ *
  * @OA\SecurityScheme(
  *      securityScheme="bearerAuth",
  *      in="header",
@@ -26,6 +27,7 @@ You can explore more about API and try out to learn more.",
  *      scheme="bearer",
  *      bearerFormat="JWT",
  * )
+ *
  * @OA\Tag(
  *     name="Admin",
  *     description="Admin API endpoint"
