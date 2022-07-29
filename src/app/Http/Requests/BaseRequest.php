@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Requests;
-
 
 use App\Traits\ApiResponse;
 use Illuminate\Foundation\Http\FormRequest;
@@ -17,7 +15,10 @@ class BaseRequest extends FormRequest
     {
         if($this->wantsJson())
         {
-            $response = $this->error('Invalid data', $validator->errors()->toArray());
+            $response = $this->error(
+                'Invalid data',
+                $validator->errors()->toArray()
+            );
         }else{
             $response = redirect()
                 ->route('guest.login')

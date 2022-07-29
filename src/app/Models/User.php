@@ -15,8 +15,11 @@ use Illuminate\Notifications\Notifiable;
  * @OA\Schema(
  *     title="User model",
  *     description="User model",
- *     required={"first_name", "last_name", "email", "password", "password_confirmation", "avatar",
- *     "address", "phone_number"},
+ *     required={
+ *          "first_name", "last_name", "email",
+ *          "password", "password_confirmation", "avatar",
+ *          "address", "phone_number"
+ *     },
  * )
  */
 class User extends Authenticatable
@@ -132,7 +135,7 @@ class User extends Authenticatable
         'address',
         'phone_number',
         'is_marketing',
-        'last_login_at'
+        'last_login_at',
     ];
 
     /**
@@ -152,7 +155,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'last_login_at' => 'datetime'
+        'last_login_at' => 'datetime',
     ];
 
     public function tokens()

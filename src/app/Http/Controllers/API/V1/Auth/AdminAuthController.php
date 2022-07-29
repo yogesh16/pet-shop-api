@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Http\Controllers\API\V1\Auth;
 
 use App\Http\Controllers\API\V1\BaseController;
@@ -36,7 +35,6 @@ class AdminAuthController extends BaseController
      *                     type="string",
      *                     description="Admin password"
      *                 ),
-     *                 example={"email": "john@petshop.com", "password": "john123"}
      *             )
      *         )
      *     ),

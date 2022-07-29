@@ -1,13 +1,11 @@
 <?php
 
-
 namespace App\Extensions;
 
 use App\Models\JwtToken;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
-use Illuminate\Support\Str;
 
 class JWTToUserProvider implements UserProvider
 {
@@ -51,7 +49,11 @@ class JWTToUserProvider implements UserProvider
         return null;
     }
 
-    public function validateCredentials (Authenticatable $user, array $credentials)
+    public function validateCredentials
+    (
+        Authenticatable $user,
+        array $credentials
+    )
     {
         $plain = $credentials['password'];
 
