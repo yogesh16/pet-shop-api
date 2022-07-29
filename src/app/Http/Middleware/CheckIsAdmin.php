@@ -22,7 +22,8 @@ class CheckIsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!empty(trim($request->bearerToken()))){
+        $token = trim($request->bearerToken());
+        if($token !== null && $token !== ''){
             $user = Auth::user();
             if($user && $user->isAdmin()){
                 return $next($request);

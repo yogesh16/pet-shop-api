@@ -38,7 +38,7 @@ class AccessTokenGuard implements Guard
         // retrieve via token
         $token = $this->getTokenForRequest();
 
-        if (!empty($token)) {
+        if ($token !== null && $token !== '') {
             // the token was found, how you want to pass?
             $user = $this->provider->retrieveByToken($this->storageKey, $token);
         }
@@ -53,11 +53,11 @@ class AccessTokenGuard implements Guard
     public function getTokenForRequest () {
         $token = $this->request->query($this->inputKey);
 
-        if (empty($token)) {
+        if ($token !== null && $token !== '') {
             $token = $this->request->input($this->inputKey);
         }
 
-        if (empty($token)) {
+        if ($token !== null && $token !== '') {
             $token = $this->request->bearerToken();
         }
 
@@ -72,7 +72,7 @@ class AccessTokenGuard implements Guard
      * @return bool
      */
     public function validate (array $credentials = []) {
-        if (empty($credentials[$this->inputKey])) {
+        if (array_key_exists($this->inputKey, $credentials)) {
             return false;
         }
 
@@ -105,8 +105,6 @@ class AccessTokenGuard implements Guard
 
     protected function hasValidCredentials($user, $credentials)
     {
-        $validated = ! is_null($user) && $this->provider->validateCredentials($user, $credentials);
-
-        return $validated;
+        return ! is_null($user) && $this->provider->validateCredentials($user, $credentials);
     }
 }
