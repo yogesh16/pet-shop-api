@@ -1,12 +1,8 @@
 <?php
 
-
 namespace App\Http\Controllers\API\V1;
 
-
 use App\Http\Requests\CreateAdminRequest;
-use App\Http\Requests\LoginRequest;
-use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;

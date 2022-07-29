@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Traits\ApiResponse;
-
 class LoginRequest extends BaseRequest
 {
     /**

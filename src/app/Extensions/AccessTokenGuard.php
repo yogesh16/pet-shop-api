@@ -1,16 +1,11 @@
 <?php
 
-
 namespace App\Extensions;
-
-
 
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
-
-use GuzzleHttp\json_decode;
 
 class AccessTokenGuard implements Guard
 {
@@ -43,7 +38,7 @@ class AccessTokenGuard implements Guard
     }
 
     public function user () {
-        if (!is_null($this->user)) {
+        if (! is_null($this->user)) {
             return $this->user;
         }
 
