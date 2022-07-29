@@ -19,7 +19,13 @@ class AccessTokenGuard implements Guard
     private $storageKey = '';
     private $request;
 
-    public function __construct (UserProvider $provider, Request $request, $configuration) {
+    public function __construct
+    (
+        UserProvider $provider,
+        Request $request,
+        $configuration
+    )
+    {
         $this->provider = $provider;
         $this->request = $request;
         // key to check in request
@@ -96,12 +102,14 @@ class AccessTokenGuard implements Guard
     public function attempt(array $credentials = [], $remember = false)
     {
 
-        $this->lastAttempted = $user = $this->provider->retrieveByCredentials($credentials);
+        $user = $this->provider->retrieveByCredentials($credentials);
+        $this->lastAttempted = $user;
 
 
-        // If an implementation of UserInterface was returned, we'll ask the provider
-        // to validate the user against the given credentials, and if they are in
-        // fact valid we'll log the users into the application and return true.
+        // If an implementation of UserInterface was returned,
+        // we'll ask the provider to validate the user against
+        // the given credentials, and if they are in fact valid
+        // we'll log the users into the application and return true.
         if ($user && $this->hasValidCredentials($user, $credentials)) {
             $this->user = $user;
             //Todo update last login time.
@@ -113,6 +121,7 @@ class AccessTokenGuard implements Guard
 
     protected function hasValidCredentials($user, $credentials)
     {
-        return ! is_null($user) && $this->provider->validateCredentials($user, $credentials);
+        return ! is_null($user) &&
+            $this->provider->validateCredentials($user, $credentials);
     }
 }
