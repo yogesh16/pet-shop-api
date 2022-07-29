@@ -174,7 +174,7 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function isAdmin(): Boolean
+    public function isAdmin(): bool
     {
         return $this->is_admin === 1;
     }

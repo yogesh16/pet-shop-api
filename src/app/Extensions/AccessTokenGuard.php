@@ -26,16 +26,8 @@ class AccessTokenGuard implements Guard
         $this->request = $request;
         // key to check in request
         $this->inputKey = 'access_token';
-        if(array_key_exists('input_key', $configuration))
-        {
-            $this->inputKey = $configuration['input_key'];
-        }
         // key to check in database
         $this->storageKey = 'access_token';
-        if(array_key_exists('storage_key', $configuration))
-        {
-            $this->storageKey = $configuration['storage_key'];
-        }
     }
 
     public function user ()
@@ -48,7 +40,7 @@ class AccessTokenGuard implements Guard
         $user = null;
 
         // retrieve via token
-        $token = $this->getTokenForRequest();
+        $token = $this->request->bearerToken();
 
         if ($token !== null && $token !== '')
         {
@@ -66,19 +58,7 @@ class AccessTokenGuard implements Guard
      */
     public function getTokenForRequest ()
     {
-        $token = $this->request->query($this->inputKey);
-
-        if ($token !== null && $token !== '')
-        {
-            $token = $this->request->input($this->inputKey);
-        }
-
-        if ($token !== null && $token !== '')
-        {
-            $token = $this->request->bearerToken();
-        }
-
-        return $token;
+        return $this->request->bearerToken();
     }
 
     /**
