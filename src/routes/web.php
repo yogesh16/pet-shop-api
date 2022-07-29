@@ -16,13 +16,3 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('/get-token', function(){
-    $user = \App\Models\User::find(1);
-    dd($user->generateToken());
-});
-
-Route::get('/decode', function (){
-    $token = request()->token;
-    dd(\App\Services\JWTService::parseToken($token));
-});
