@@ -19,7 +19,7 @@ use App\Models\User;
  */
 class JWTService
 {
-    private static function getConfig() : Configuration
+    private static function getConfig(): Configuration
     {
         $config = Configuration::forAsymmetricSigner(
             new Signer\Rsa\Sha256(),
@@ -36,7 +36,7 @@ class JWTService
         return $config;
     }
 
-    public static function getToken(User $user) : string
+    public static function getToken(User $user): string
     {
         $config = self::getConfig();
         $now    = new \DateTimeImmutable();
@@ -62,7 +62,7 @@ class JWTService
         return $token;
     }
 
-    public static function parseToken(string $token) : User|null
+    public static function parseToken(string $token): User|null
     {
         $config = self::getConfig();
         $parsed = $config->parser()->parse($token);

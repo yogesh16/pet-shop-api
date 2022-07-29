@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['api'], 'prefix' => 'v1/admin'], function(){
     Route::post('/login', [AdminAuthController::class, 'login']);
 
-
     //Only authorized request can access following API Endpoints.
     Route::group(['middleware' => ['is-admin']], function(){
         Route::get('/logout', [AdminAuthController::class, 'logout']);

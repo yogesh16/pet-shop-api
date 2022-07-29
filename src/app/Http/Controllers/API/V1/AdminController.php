@@ -44,6 +44,7 @@ class AdminController extends BaseController
      *     }
      * )
      * @param CreateAdminRequest $request
+     *
      * @return JsonResponse
      */
     public function create(CreateAdminRequest $request)
@@ -89,6 +90,7 @@ class AdminController extends BaseController
      *     }
      * )
      * @param Request $request
+     *
      * @return void
      */
     public function userListing(Request $request)

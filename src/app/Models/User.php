@@ -8,6 +8,7 @@ use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use phpDocumentor\Reflection\Types\Boolean;
 
 /**
  * Class User.
@@ -163,7 +164,7 @@ class User extends Authenticatable
         return $this->hasMany(JwtToken::class);
     }
 
-    public function generateToken() : string
+    public function generateToken(): string
     {
         return JWTService::getToken($this);
     }
@@ -172,7 +173,7 @@ class User extends Authenticatable
      * Check is user admin?
      * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): Boolean
     {
         return $this->is_admin === 1;
     }

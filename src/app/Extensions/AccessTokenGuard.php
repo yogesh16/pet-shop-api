@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\UserProvider;
 class AccessTokenGuard implements Guard
 {
     use GuardHelpers;
+
     private $inputKey = '';
     private $storageKey = '';
     private $request;
@@ -57,6 +58,7 @@ class AccessTokenGuard implements Guard
 
     /**
      * Get the token for the current request.
+     *
      * @return string
      */
     public function getTokenForRequest () {
@@ -99,7 +101,6 @@ class AccessTokenGuard implements Guard
 
         $user = $this->provider->retrieveByCredentials($credentials);
         $this->lastAttempted = $user;
-
 
         // If an implementation of UserInterface was returned,
         // we'll ask the provider to validate the user against
