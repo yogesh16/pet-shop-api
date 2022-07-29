@@ -23,9 +23,17 @@ class AccessTokenGuard implements Guard
         $this->provider = $provider;
         $this->request = $request;
         // key to check in request
-        $this->inputKey = isset($configuration['input_key']) ? $configuration['input_key'] : 'access_token';
+        $this->inputKey = 'access_token';
+        if(array_key_exists('input_key', $configuration))
+        {
+            $this->inputKey = $configuration['input_key'];
+        }
         // key to check in database
-        $this->storageKey = isset($configuration['storage_key']) ? $configuration['storage_key'] : 'access_token';
+        $this->storageKey = 'access_token';
+        if(array_key_exists('storage_key', $configuration))
+        {
+            $this->storageKey = $configuration['storage_key'];
+        }
     }
 
     public function user () {

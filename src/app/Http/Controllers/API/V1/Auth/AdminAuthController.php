@@ -72,9 +72,9 @@ class AdminAuthController extends BaseController
             $token = auth()->user()->generateToken();
 
             return $this->success(['token' => $token]);
-        } else {
-            return $this->error('Invalid username or password');
         }
+
+        return $this->error('Invalid username or password');
     }
 
     /**
