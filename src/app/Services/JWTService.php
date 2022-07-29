@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\JwtToken;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer;
@@ -10,7 +11,6 @@ use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Validation\Constraint\IssuedBy;
 use Lcobucci\JWT\Validation\Constraint\PermittedFor;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
-use App\Models\User;
 
 /**
  * Class JWTService
@@ -42,7 +42,7 @@ class JWTService
     public static function getToken(User $user): string
     {
         $config = self::getConfig();
-        $now    = new \DateTimeImmutable();
+        $now = new \DateTimeImmutable();
 
         $token = $config
             ->builder()

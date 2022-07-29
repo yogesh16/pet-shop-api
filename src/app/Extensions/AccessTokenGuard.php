@@ -3,9 +3,9 @@
 namespace App\Extensions;
 
 use Illuminate\Auth\GuardHelpers;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Http\Request;
 
 class AccessTokenGuard implements Guard
 {

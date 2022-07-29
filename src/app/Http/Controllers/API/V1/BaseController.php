@@ -7,7 +7,7 @@ use Illuminate\Routing\Controller;
 /**
  * @OA\Info(
  *     description="This is API Documentation for Pet Shop.
-You can explore more about API and try out to learn more.",
+ *     You can explore more about API and try out to learn more.",
  *     version="1.0.0",
  *     title="Pet Shop API - Swagger Documentation",
  *     @OA\Contact(
@@ -35,5 +35,4 @@ You can explore more about API and try out to learn more.",
  */
 class BaseController extends Controller
 {
-
 }
