@@ -5,8 +5,10 @@ namespace App\Http\Controllers\API\V1\Auth;
 
 use App\Http\Controllers\API\V1\BaseController;
 use App\Http\Requests\LoginRequest;
+use App\Models\JwtToken;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AdminAuthController extends BaseController
@@ -18,7 +20,6 @@ class AdminAuthController extends BaseController
      *     path="/api/v1/admin/login",
      *     tags={"Admin"},
      *     summary="Login an Admin account",
-     *     operationId="test",
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\MediaType(
@@ -58,10 +59,7 @@ class AdminAuthController extends BaseController
      *     @OA\Response(
      *         response=500,
      *         description="Internal server error"
-     *     ),
-     *     security={
-     *         {"api_key": {}}
-     *     }
+     *     )
      * )
      * @param LoginRequest $request
      * @return JsonResponse
@@ -70,15 +68,56 @@ class AdminAuthController extends BaseController
     {
         $credentials = $request->validated();
 
-        if(Auth::attempt($credentials)){
+        if (Auth::attempt($credentials) && auth()->user()->isAdmin()) {
             $token = auth()->user()->generateToken();
 
             return $this->success(['token' => $token]);
-
         } else {
-
             return $this->error('Invalid username or password');
-
         }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/v1/admin/logout",
+     *     tags={"Admin"},
+     *     summary="Logout an Admin user",
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Page not found"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Unprocessable Entity"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error"
+     *     ),
+     *     security={
+     *         {"bearerAuth": {}}
+     *     }
+     * )
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function logout(Request $request)
+    {
+        $user = Auth::user();
+
+        //Remove logged in user JWT Token from db
+        JwtToken::where('user_id', $user->id)
+            ->where('access_token', $request->bearerToken())
+            ->delete();
+
+        return $this->success([]);
     }
 }
