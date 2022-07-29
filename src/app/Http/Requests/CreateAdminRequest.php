@@ -28,7 +28,7 @@ class CreateAdminRequest extends BaseRequest
             'email' => 'required|email',
             'password' => 'required|confirmed|min:6',
             'avatar' => 'required',
-            'phone_number' => 'required'
+            'phone_number' => 'required',
         ];
     }
 }

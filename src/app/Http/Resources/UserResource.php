@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -26,7 +25,7 @@ class UserResource extends JsonResource
             'is_marketing' => $this->is_marketing,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'last_login_at' => $this->last_login_at
+            'last_login_at' => $this->last_login_at,
         ];
     }
 }
