@@ -35,14 +35,14 @@ class JWTToUserProvider implements UserProvider
     }
 
     public function retrieveByCredentials (array $credentials) {
-        $user = $this->user;
-        foreach ($credentials as $credentialKey => $credentialValue) {
-            if (!Str::contains($credentialKey, 'password')) {
-                $user->where($credentialKey, $credentialValue);
-            }
+
+        $user = User::where('email', $credentials['email'])->first();
+
+        if($this->validateCredentials($user, $credentials)){
+            return $user;
         }
 
-        return $user->first();
+        return null;
     }
 
     public function validateCredentials (Authenticatable $user, array $credentials) {
