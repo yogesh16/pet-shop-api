@@ -2,7 +2,7 @@
 
 namespace App\Extensions;
 
-use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
@@ -43,13 +43,9 @@ class AccessTokenGuard implements Guard
         // retrieve via token
         $token = $this->request->bearerToken();
 
-        if ($token !== null && $token !== '')
-        {
-            // the token was found, how you want to pass?
-            $user = $this->provider->retrieveByToken($this->storageKey, $token);
-        }
+        $this->user = $this->provider->retrieveByToken($this->storageKey, $token);
 
-        return $this->user = $user;
+        return $this->user;
     }
 
     /**
@@ -71,12 +67,9 @@ class AccessTokenGuard implements Guard
      */
     public function validate (array $credentials = [])
     {
-        if (array_key_exists($this->inputKey, $credentials))
-        {
-            return false;
-        }
-
-        $credentials = [ $this->storageKey => $credentials[$this->inputKey] ];
+        $credentials = [
+            $this->storageKey => $credentials[$this->inputKey] ?? null
+        ];
 
         if ($this->provider->retrieveByCredentials($credentials))
         {
@@ -97,8 +90,9 @@ class AccessTokenGuard implements Guard
         // we'll log the users into the application and return true.
         if ($user && $this->hasValidCredentials($user, $credentials))
         {
+            $user->last_login_at = Carbon::now();
+            $user->save();
             $this->user = $user;
-            //Todo update last login time.
             return true;
         }
 

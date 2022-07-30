@@ -11,8 +11,8 @@ class CreateAdminRequest extends BaseRequest
      */
     public function authorize()
     {
-        //Todo only allow admin
-        return true;
+        $user = $this->user();
+        return isset($user) && $user->isAdmin();
     }
 
     /**

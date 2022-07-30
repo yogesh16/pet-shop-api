@@ -42,11 +42,6 @@ class JWTToUserProvider implements UserProvider
 
         $user = User::where('email', $credentials['email'])->first();
 
-        if(! isset($user))
-        {
-            return null;
-        }
-
         if($this->validateCredentials($user, $credentials)){
             return $user;
         }
