@@ -84,11 +84,6 @@ class JWTService
         // @phpstan-ignore-next-line
         $claims = $parsed->claims();
 
-        if(isset($claims))
-        {
-            return User::where('uuid', $claims->get('user_uuid'))->first();
-        }
-
-        return null;
+        return User::where('uuid', $claims->get('user_uuid'))->first();
     }
 }

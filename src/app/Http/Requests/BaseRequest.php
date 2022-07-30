@@ -13,20 +13,10 @@ class BaseRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        if($this->wantsJson())
-        {
-            $response = $this->error(
-                'Invalid data',
-                $validator->errors()->toArray()
-            );
-        }
-        else
-        {
-            $response = redirect()
-                ->route('guest.login')
-                ->with('message', 'Ops! Some errors occurred')
-                ->withErrors($validator);
-        }
+        $response = $this->error(
+            'Invalid data',
+            $validator->errors()->toArray()
+        );
 
         throw (new ValidationException($validator, $response))
             ->errorBag($this->errorBag)

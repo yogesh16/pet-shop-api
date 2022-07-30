@@ -24,14 +24,10 @@ class CheckIsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        $token = trim($request->bearerToken());
-        if($token !== null && $token !== '')
+        $user = Auth::user();
+        if($user && $user->isAdmin())
         {
-            $user = Auth::user();
-            if($user && $user->isAdmin())
-            {
-                return $next($request);
-            }
+            return $next($request);
         }
 
         return $this->error('Unauthorized', [], [], 401);
