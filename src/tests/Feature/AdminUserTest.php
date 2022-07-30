@@ -240,6 +240,36 @@ class AdminUserTest extends TestCase
                                   ]);
     }
 
+    public function test_delete_user()
+    {
+        $user = User::factory()->create();
+
+        $this->json('DELETE', '/api/v1/admin/user-delete/' . $user->uuid, [], $this->getHeaders())
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                                      "success",
+                                      "data",
+                                      "error",
+                                      "errors",
+                                      "extra"
+                                  ]);
+    }
+
+    public function test_admin_user_can_not_be_deleted()
+    {
+        $admin = $this->getAdmin();
+
+        $this->json('DELETE', '/api/v1/admin/user-delete/' . $admin->uuid, [], $this->getHeaders())
+            ->assertStatus(404)
+            ->assertJsonStructure([
+                                      "success",
+                                      "data",
+                                      "error",
+                                      "errors",
+                                      "trace"
+                                  ]);
+    }
+
     //Helper functions
 
     private function getUserData()

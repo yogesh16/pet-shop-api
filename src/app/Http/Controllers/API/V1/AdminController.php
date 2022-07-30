@@ -240,4 +240,61 @@ class AdminController extends BaseController
 
         return $this->successWithJsonResource(UserResource::make($user->fresh()));
     }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/v1/admin/user-delete/{uuid}",
+     *     tags={"Admin"},
+     *     summary="Delete a User account",
+     *     @OA\Parameter(
+     *          in="path",
+     *          name="uuid",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Page not found"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Unprocessable Entity"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error"
+     *     ),
+     *     security={
+     *         {"bearerAuth": {}}
+     *     }
+     * )
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function userDelete(string $uuid): JsonResponse
+    {
+        //Get non admin user using uuid
+        $user = User::uuid($uuid)->notAdmin()->first();
+
+        if(! isset($user->id))
+        {
+            return $this->error('User not found',404);
+        }
+
+        //Delete user
+        $user->delete();
+
+        return $this->success([]);
+    }
 }

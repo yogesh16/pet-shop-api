@@ -26,5 +26,6 @@ Route::group(['middleware' => ['api'], 'prefix' => 'v1/admin'], function()
         Route::post('/create', [AdminController::class, 'create']);
         Route::get('/user-listing', [AdminController::class, 'userListing']);
         Route::put('/user-edit/{uuid}', [AdminController::class, 'userEdit']);
+        Route::delete('/user-delete/{uuid}', [AdminController::class, 'userDelete']);
     });
 });
