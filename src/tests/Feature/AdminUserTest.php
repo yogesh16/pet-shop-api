@@ -97,10 +97,65 @@ class AdminUserTest extends TestCase
                   "prev_page_url",
                   "to",
                   "total"
-            ])->decodeResponseJson();
+            ])
+            ->decodeResponseJson();
 
         $this->assertCount(10, $content['data']);
     }
+
+    public function test_get_user_filter_by_email()
+    {
+        User::factory(10)->create();
+        $user = User::first();
+
+        $content = $this->json('GET', '/api/v1/admin/user-listing', ['email' => $user->email], $this->getHeaders())
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                                      "current_page",
+                                      "data",
+                                      "first_page_url",
+                                      "from",
+                                      "last_page",
+                                      "last_page_url",
+                                      "links",
+                                      "next_page_url",
+                                      "path",
+                                      "per_page",
+                                      "prev_page_url",
+                                      "to",
+                                      "total"
+                                  ])
+            ->decodeResponseJson();
+
+        $this->assertCount(1, $content['data']);
+    }
+
+    public function test_get_user_limit()
+    {
+        User::factory(10)->create();
+
+        $content = $this->json('GET', '/api/v1/admin/user-listing', ['limit' => 5], $this->getHeaders())
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                                      "current_page",
+                                      "data",
+                                      "first_page_url",
+                                      "from",
+                                      "last_page",
+                                      "last_page_url",
+                                      "links",
+                                      "next_page_url",
+                                      "path",
+                                      "per_page",
+                                      "prev_page_url",
+                                      "to",
+                                      "total"
+                                  ])
+            ->decodeResponseJson();
+
+        $this->assertCount(5, $content['data']);
+    }
+
 
     private function getUserData()
     {

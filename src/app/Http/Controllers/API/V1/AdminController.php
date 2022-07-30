@@ -64,6 +64,77 @@ class AdminController extends BaseController
      *     path="/api/v1/admin/user-listing",
      *     tags={"Admin"},
      *     summary="List all users",
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="page",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="limit",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="sortBy",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="desc",
+     *          @OA\Schema(
+     *              type="boolean"
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="first_name",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="email",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="phone",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="address",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="created_at",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="marketing",
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
+     *          description="Marketing possible value: 0 or 1"
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="OK"
@@ -94,8 +165,14 @@ class AdminController extends BaseController
      */
     public function userListing(Request $request): JsonResponse
     {
-        $data = User::where('is_admin', 0)
-            ->paginate($request->all());
+        $perPage = $request->has('limit') ? $request->input('limit') : 10;
+
+        //get query builder
+        $users = User::filter($request);
+
+        $users->where('is_admin', 0);
+
+        $data = $users->paginate($perPage);
 
         return response()->json($data, 200);
     }

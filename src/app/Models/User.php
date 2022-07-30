@@ -5,10 +5,13 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Services\JWTService;
 use App\Traits\Uuids;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use phpDocumentor\Reflection\Types\Boolean;
 
 /**
@@ -181,5 +184,46 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->is_admin === 1;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Builder
+     */
+    public static function filter(Request $request): Builder
+    {
+        $query = User::query();
+
+        $keys = [
+            'first_name',
+            'email',
+            'phone',
+            'address',
+            'marketing',
+        ];
+
+        $data = Collection::make($request->all())->only($keys);
+
+        foreach ($data as $key => $value)
+        {
+            $query->orWhere($key, 'LIKE', $value);
+        }
+
+        if($request->has('created_at'))
+        {
+            $date = date("Y-m-d", strtotime($request->input('created_at')));
+
+            $query->orWhereDate('created_at', $date);
+        }
+
+        if($request->has('sortBy'))
+        {
+            $isDesc = $request->has('desc') ? $request->input('desc') : false;
+
+            $query->orderBy($request->input('sortBy'), $isDesc === true ? 'DESC' : 'ASC');
+        }
+
+        return $query;
     }
 }
