@@ -16,7 +16,7 @@ class CreateAdminResource extends JsonResource
     {
         $data = json_decode((new UserResource($this))->toJson(), true);
 
-        $data['token'] = $this->generateToken();
+        $data['token'] = $this->generateToken(); // @phpstan-ignore-line
 
         return $data;
     }

@@ -56,7 +56,7 @@ class AdminController extends BaseController
         $data['password'] = Hash::make($data['password']);
         $user = User::create($data);
 
-        return $this->success(CreateAdminResource::make($user));
+        return $this->successWithJsonResource(CreateAdminResource::make($user));
     }
 
     /**
@@ -90,9 +90,9 @@ class AdminController extends BaseController
      * )
      * @param Request $request
      *
-     * @return void
+     * @return JsonResponse
      */
-    public function userListing(Request $request)
+    public function userListing(Request $request): JsonResponse
     {
         $data = User::paginate($request->all());
 

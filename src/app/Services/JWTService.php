@@ -14,6 +14,7 @@ use Lcobucci\JWT\Validation\Constraint\SignedWith;
 
 /**
  * Class JWTService
+ *
  * @package App\Services
  *
  * Service helper for JWT
@@ -75,7 +76,7 @@ class JWTService
         {
             $config->validator()->assert($parsed, ...$constraints);
         }
-        catch(RequiredConstraintsViolated $exp)
+        catch(\Exception $exp)
         {
             Log::error('JWTService.parseToken', [json_encode($exp)]);
             return null;

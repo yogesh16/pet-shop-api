@@ -10,9 +10,11 @@ parameters:
     level: 8
 
     ignoreErrors:
-		#- '#PHPDoc tag @var#'
+        - '#Property App\\Models\\[a-zA-Z0-9\\_]+::\$[a-zA-Z0-9\\_]+ is unused.#'
 
     excludePaths:
+        - app/Http/Resources/*
         #- ./*/*/FileToBeExcluded.php
 
     checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false

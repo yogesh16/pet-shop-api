@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Services\JWTService;
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -159,7 +160,10 @@ class User extends Authenticatable
         'last_login_at' => 'datetime',
     ];
 
-    public function tokens()
+    /**
+     * @return HasMany
+     */
+    public function tokens(): HasMany
     {
         return $this->hasMany(JwtToken::class);
     }

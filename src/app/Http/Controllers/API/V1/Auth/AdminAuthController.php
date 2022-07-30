@@ -59,6 +59,7 @@ class AdminAuthController extends BaseController
      *         description="Internal server error"
      *     )
      * )
+     *
      * @param LoginRequest $request
      *
      * @return JsonResponse
@@ -105,6 +106,7 @@ class AdminAuthController extends BaseController
      *         {"bearerAuth": {}}
      *     }
      * )
+     *
      * @param Request $request
      *
      * @return JsonResponse
@@ -114,7 +116,7 @@ class AdminAuthController extends BaseController
         $user = Auth::user();
 
         //Remove logged in user JWT Token from db
-        JwtToken::where('user_id', $user->id)
+        JwtToken::where('user_id', $user->id ?? 0)
             ->where('access_token', $request->bearerToken())
             ->delete();
 
