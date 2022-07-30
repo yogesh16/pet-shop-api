@@ -2,7 +2,9 @@
 
 namespace App\Extensions;
 
+use App\Models\User;
 use Illuminate\Auth\GuardHelpers;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Http\Request;
@@ -11,15 +13,14 @@ class AccessTokenGuard implements Guard
 {
     use GuardHelpers;
 
-    private $inputKey = '';
-    private $storageKey = '';
-    private $request;
+    private string $inputKey = '';
+    private string $storageKey = '';
+    private Request $request;
 
     public function __construct
     (
         UserProvider $provider,
-        Request $request,
-        $configuration
+        Request $request
     )
     {
         $this->provider = $provider;
@@ -32,7 +33,7 @@ class AccessTokenGuard implements Guard
 
     public function user ()
     {
-        if (! is_null($this->user))
+        if (isset($this->user->id))
         {
             return $this->user;
         }
@@ -56,7 +57,7 @@ class AccessTokenGuard implements Guard
      *
      * @return string
      */
-    public function getTokenForRequest ()
+    public function getTokenForRequest (): string|null
     {
         return $this->request->bearerToken();
     }
@@ -85,11 +86,10 @@ class AccessTokenGuard implements Guard
         return false;
     }
 
-    public function attempt(array $credentials = [], $remember = false)
+    public function attempt(array $credentials = [], bool $remember = false): bool
     {
 
         $user = $this->provider->retrieveByCredentials($credentials);
-        $this->lastAttempted = $user;
 
         // If an implementation of UserInterface was returned,
         // we'll ask the provider to validate the user against
@@ -105,9 +105,8 @@ class AccessTokenGuard implements Guard
         return false;
     }
 
-    protected function hasValidCredentials($user, $credentials)
+    protected function hasValidCredentials(Authenticatable $user, array $credentials): bool
     {
-        return ! is_null($user) &&
-            $this->provider->validateCredentials($user, $credentials);
+        return $this->provider->validateCredentials($user, $credentials);
     }
 }

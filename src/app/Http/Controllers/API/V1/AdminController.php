@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Requests\CreateAdminRequest;
+use App\Http\Resources\CreateAdminResource;
 use App\Models\User;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
@@ -55,9 +56,7 @@ class AdminController extends BaseController
         $data['password'] = Hash::make($data['password']);
         $user = User::create($data);
 
-        $user->token = $user->generateToken();
-
-        return $this->success($user);
+        return $this->success(CreateAdminResource::make($user));
     }
 
     /**

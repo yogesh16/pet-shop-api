@@ -9,8 +9,8 @@ use Illuminate\Contracts\Auth\UserProvider;
 
 class JWTToUserProvider implements UserProvider
 {
-    private $token;
-    private $user;
+    private JwtToken $token;
+    private User $user;
 
     public function __construct (User $user, JwtToken $token)
     {
@@ -42,11 +42,14 @@ class JWTToUserProvider implements UserProvider
 
         $user = User::where('email', $credentials['email'])->first();
 
+        if(! isset($user))
+        {
+            return null;
+        }
+
         if($this->validateCredentials($user, $credentials)){
             return $user;
         }
-
-        return null;
     }
 
     public function validateCredentials
