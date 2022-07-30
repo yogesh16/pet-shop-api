@@ -30,6 +30,6 @@ class CheckIsAdmin
             return $next($request);
         }
 
-        return $this->error('Unauthorized', [], [], 401);
+        return $this->error('Unauthorized', 401);
     }
 }

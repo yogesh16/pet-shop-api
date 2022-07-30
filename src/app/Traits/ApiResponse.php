@@ -46,20 +46,20 @@ trait ApiResponse
     /**
      * @param string $message
      *
+     * @param int $code
+     *
      * @param array $errors
      *
      * @param array $trace
-     *
-     * @param int $code
      *
      * @return JsonResponse
      */
     protected function error
     (
         string $message,
+        int $code = 422,
         array $errors = [],
-        array $trace = [],
-        int $code = 422
+        array $trace = []
     ): JsonResponse
     {
         return response()->json([

@@ -60,7 +60,7 @@ class JWTService
         [
             'user_id' => $user->id,
             'access_token' => $token,
-            'token_title' => '',
+            'token_title' => 'Login',
         ];
         JwtToken::create($jwt);
 
@@ -84,6 +84,6 @@ class JWTService
         // @phpstan-ignore-next-line
         $claims = $parsed->claims();
 
-        return User::where('uuid', $claims->get('user_uuid'))->first();
+        return User::uuid($claims->get('user_uuid'))->first();
     }
 }

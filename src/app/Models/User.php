@@ -12,6 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Hash;
 use phpDocumentor\Reflection\Types\Boolean;
 
 /**
@@ -162,6 +163,38 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'last_login_at' => 'datetime',
     ];
+
+    /**
+     * Encrypt password attribute
+     *
+     * @param string $value
+     */
+    public function setPasswordAttribute(string $value)
+    {
+        $this->attributes['password'] = Hash::make($value);
+    }
+
+    /**
+     * @param Builder $query
+     *
+     * @param string $uuid
+     *
+     * @return mixed
+     */
+    public function scopeUuid(Builder $query, string $uuid): Builder
+    {
+        return $query->where('uuid', $uuid);
+    }
+
+    /**
+     * @param Builder $query
+     *
+     * @return Builder
+     */
+    public function scopeNotAdmin(Builder $query): Builder
+    {
+        return $query->where('is_admin', 0);
+    }
 
     /**
      * @return HasMany

@@ -15,6 +15,7 @@ class BaseRequest extends FormRequest
     {
         $response = $this->error(
             'Invalid data',
+            422,
             $validator->errors()->toArray()
         );
 
