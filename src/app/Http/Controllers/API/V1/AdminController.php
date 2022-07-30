@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Http\Requests\AdminUserEditRequest;
 use App\Http\Requests\CreateAdminRequest;
 use App\Http\Resources\CreateAdminResource;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
@@ -54,6 +56,8 @@ class AdminController extends BaseController
 
         $data['is_admin'] = 1;
         $data['password'] = Hash::make($data['password']);
+
+        //create new user
         $user = User::create($data);
 
         return $this->successWithJsonResource(CreateAdminResource::make($user));
@@ -168,12 +172,72 @@ class AdminController extends BaseController
         $perPage = $request->has('limit') ? $request->input('limit') : 10;
 
         //get query builder
-        $users = User::filter($request);
+        $users = User::filter($request)->notAdmin();
 
-        $users->where('is_admin', 0);
-
+        //get paginated data
         $data = $users->paginate($perPage);
 
         return response()->json($data, 200);
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/api/v1/admin/user-edit/{uuid}",
+     *     tags={"Admin"},
+     *     summary="Edit a User account",
+     *     @OA\Parameter(
+     *          in="path",
+     *          name="uuid",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\RequestBody(ref="#/components/requestBodies/User"),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Page not found"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Unprocessable Entity"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error"
+     *     ),
+     *     security={
+     *         {"bearerAuth": {}}
+     *     }
+     * )
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function userEdit(AdminUserEditRequest $request, string $uuid): JsonResponse
+    {
+        //get user data
+        $data = $request->validated();
+
+        //Get non admin user using uuid
+        $user = User::uuid($uuid)->notAdmin()->first();
+
+        if(! isset($user->id))
+        {
+            return $this->error('User not found',404);
+        }
+
+        //Update user
+        $user->update($data);
+
+        return $this->successWithJsonResource(UserResource::make($user->fresh()));
     }
 }

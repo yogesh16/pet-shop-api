@@ -13,7 +13,7 @@ class AdminUserTest extends TestCase
 
     public function test_without_log_in_user_can_not_access()
     {
-        $this->json('POST', '/api/v1/admin/create', $this->getUserData(), ['Accept' => 'application/json',])
+        $this->json('POST', '/api/v1/admin/create', $this->getUserData(), ['Accept' => 'application/json'])
             ->assertStatus(401)
             ->assertJsonStructure([
                   "success",
@@ -156,6 +156,91 @@ class AdminUserTest extends TestCase
         $this->assertCount(5, $content['data']);
     }
 
+    public function test_edit_user_not_found()
+    {
+        $this->json('PUT', '/api/v1/admin/user-edit/123-123', $this->getUserData(), $this->getHeaders())
+            ->assertStatus(404);
+    }
+
+    public function test_edit_user()
+    {
+        $user = User::factory()->create();
+        $userData = $user->toArray();
+
+        //Update data
+        $userData['first_name'] = 'Colten';
+        $userData['email'] = 'colten@petshop.com';
+        $userData['password'] = '12345689';
+        $userData['password_confirmation'] = "12345689";
+
+        $this->json('PUT', '/api/v1/admin/user-edit/' . $user->uuid, $userData, $this->getHeaders())
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                                      "success",
+                                      "data" => [
+                                          "uuid",
+                                          "first_name",
+                                          "last_name",
+                                          "email",
+                                          "email_verified_at",
+                                          "avatar",
+                                          "address",
+                                          "phone_number",
+                                          "is_marketing",
+                                          "created_at",
+                                          "updated_at",
+                                          "last_login_at"
+                                      ],
+                                      "error",
+                                      "errors",
+                                      "extra"
+                                  ]);
+
+        $user = $user->fresh();
+
+        $this->assertEquals($userData['first_name'], $user->first_name);
+        $this->assertEquals($userData['email'], $user->email);
+    }
+
+    public function test_admin_user_can_not_be_editable()
+    {
+        $admin = $this->getAdmin();
+
+        $this->json('PUT', '/api/v1/admin/user-edit/' . $admin->uuid, $admin->toArray(), $this->getHeaders())
+            ->assertStatus(422)
+            ->assertJsonStructure([
+                                      "success",
+                                      "data",
+                                      "error",
+                                      "errors",
+                                      "trace"
+                                  ]);
+    }
+
+    public function test_edit_user_email_unique_validation()
+    {
+        $admin = $this->getAdmin();
+
+        $user = User::factory()->create();
+        $userData = $user->toArray();
+
+        //Update data;
+        $userData['email'] = $admin->email;
+        $userData['password'] = '12345689';
+        $userData['password_confirmation'] = "12345689";
+
+        $this->json('PUT', '/api/v1/admin/user-edit/' . $user->uuid, $userData, $this->getHeaders($admin))
+            ->assertStatus(422)
+            ->assertJsonStructure([
+                                      "success",
+                                      "data",
+                                      "error",
+                                      "errors",
+                                      "trace"
+                                  ]);
+    }
+
+    //Helper functions
 
     private function getUserData()
     {
@@ -171,6 +256,7 @@ class AdminUserTest extends TestCase
         ];
     }
 
+    //get headers array
     private function getHeaders($admin = null)
     {
         if(! isset($admin))
@@ -185,6 +271,7 @@ class AdminUserTest extends TestCase
         ];
     }
 
+    //return admin user
     private function getAdmin()
     {
         $user = User::factory()->create();
