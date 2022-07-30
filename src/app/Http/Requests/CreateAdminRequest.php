@@ -25,7 +25,7 @@ class CreateAdminRequest extends BaseRequest
         return [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:6',
             'avatar' => 'required',
             'phone_number' => 'required',
