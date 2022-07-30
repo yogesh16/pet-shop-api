@@ -11,20 +11,24 @@ class AdminUserTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_without_log_in_user_can_not_access()
+    {
+        $this->json('POST', '/api/v1/admin/create', $this->getUserData(), ['Accept' => 'application/json',])
+            ->assertStatus(401)
+            ->assertJsonStructure([
+                  "success",
+                  "data",
+                  "error",
+                  "errors",
+                  "trace"
+            ]);
+    }
+
     public function test_admin_user_can_be_created_only_by_admin()
     {
-        $userData = [
-            'first_name' => 'test',
-            'last_name' => 'admin',
-            'email' => 'test@admin.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
-            'address' => '21 Street',
-            'phone_number' => '9012312312',
-            'avatar' => '4f0b35d3-0b4a-482c-9a65-95e49acbc472'
-        ];
+        $userData = $this->getUserData();
 
-        $response = $this->json('POST', '/api/v1/admin/create', $userData, $this->getHeaders())
+        $this->json('POST', '/api/v1/admin/create', $userData, $this->getHeaders())
             ->assertStatus(200)
             ->assertJsonStructure([
                   "success",
@@ -57,18 +61,10 @@ class AdminUserTest extends TestCase
     {
         $admin = $this->getAdmin();
 
-        $userData = [
-            'first_name' => 'test',
-            'last_name' => 'admin',
-            'email' => $admin->email,
-            'password' => 'password',
-            'password_confirmation' => 'password',
-            'address' => '21 Street',
-            'phone_number' => '9012312312',
-            'avatar' => '4f0b35d3-0b4a-482c-9a65-95e49acbc472'
-        ];
+        $userData = $this->getUserData();
+        $userData['email'] = $admin->email;
 
-        $response = $this->json('POST', '/api/v1/admin/create', $userData, $this->getHeaders($admin))
+        $this->json('POST', '/api/v1/admin/create', $userData, $this->getHeaders($admin))
             ->assertStatus(422)
             ->assertJsonStructure([
                   "success",
@@ -81,7 +77,46 @@ class AdminUserTest extends TestCase
             ]);
     }
 
-    protected function getHeaders($admin = null)
+    public function test_get_user_lists()
+    {
+        User::factory(10)->create();
+
+        $content = $this->json('GET', '/api/v1/admin/user-listing', [], $this->getHeaders())
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                  "current_page",
+                  "data",
+                  "first_page_url",
+                  "from",
+                  "last_page",
+                  "last_page_url",
+                  "links",
+                  "next_page_url",
+                  "path",
+                  "per_page",
+                  "prev_page_url",
+                  "to",
+                  "total"
+            ])->decodeResponseJson();
+
+        $this->assertCount(10, $content['data']);
+    }
+
+    private function getUserData()
+    {
+        return [
+            'first_name' => 'test',
+            'last_name' => 'admin',
+            'email' => 'test@admin.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'address' => '21 Street',
+            'phone_number' => '9012312312',
+            'avatar' => '4f0b35d3-0b4a-482c-9a65-95e49acbc472'
+        ];
+    }
+
+    private function getHeaders($admin = null)
     {
         if(! isset($admin))
         {
@@ -95,7 +130,7 @@ class AdminUserTest extends TestCase
         ];
     }
 
-    protected function getAdmin()
+    private function getAdmin()
     {
         $user = User::factory()->create();
         $user->is_admin = 1;
