@@ -7,15 +7,12 @@ use App\Http\Requests\CreateAdminRequest;
 use App\Http\Resources\CreateAdminResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends BaseController
 {
-    use ApiResponse;
-
     /**
      * @OA\Post(
      *     path="/api/v1/admin/create",

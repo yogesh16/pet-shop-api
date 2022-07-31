@@ -5,15 +5,12 @@ namespace App\Http\Controllers\API\V1\Auth;
 use App\Http\Controllers\API\V1\BaseController;
 use App\Http\Requests\LoginRequest;
 use App\Models\JwtToken;
-use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AdminAuthController extends BaseController
 {
-    use ApiResponse;
-
     /**
      * @OA\Post(
      *     path="/api/v1/admin/login",

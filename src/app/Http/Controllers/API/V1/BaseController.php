@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Traits\ApiResponse;
 use Illuminate\Routing\Controller;
 
 /**
@@ -32,7 +33,13 @@ use Illuminate\Routing\Controller;
  *     name="Admin",
  *     description="Admin API endpoint"
  * )
+ *
+ * @OA\Tag(
+ *     name="User",
+ *     description="User API endpoint"
+ * )
  */
 class BaseController extends Controller
 {
+    use ApiResponse;
 }
