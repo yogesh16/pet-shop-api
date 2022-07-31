@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\UserLogin;
 use App\Models\JwtToken;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
@@ -44,6 +45,9 @@ class JWTService
             'token_title' => 'Login',
         ];
         JwtToken::create($jwt);
+
+        //Fire login event
+        UserLogin::dispatch($user);
 
         return $token;
     }
