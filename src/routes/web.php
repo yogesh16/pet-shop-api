@@ -14,6 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return \App\Http\Resources\ProductResource::collection(\App\Models\Product::paginate(5));
-    //return view('welcome');
+    return view('welcome');
 });
