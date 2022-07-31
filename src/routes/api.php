@@ -64,3 +64,5 @@ Route::middleware('api')
 
 Route::middleware(['api', 'auth'])
     ->post('v1/file/upload', [FileController::class, 'fileUpload']);
+Route::middleware(['api'])
+    ->get('v1/file/{uuid}', [FileController::class, 'readFile']);
