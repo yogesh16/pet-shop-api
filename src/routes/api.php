@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\V1\AdminController;
 use App\Http\Controllers\API\V1\Auth\AdminAuthController;
 use App\Http\Controllers\API\V1\Auth\UserAuthController;
+use App\Http\Controllers\API\V1\BrandController;
 use App\Http\Controllers\API\V1\CategoryController;
 use App\Http\Controllers\API\V1\UserController;
 use Illuminate\Support\Facades\Route;
@@ -47,3 +48,15 @@ Route::group(['middleware' => ['api'], 'prefix' => 'v1/category'], function () {
 
 Route::middleware('api')
     ->get('v1/categories', [CategoryController::class, 'categoryListing']);
+
+Route::group(['middleware' => ['api'], 'prefix' => 'v1/brand'], function () {
+    Route::group(['middleware' => ['auth']], function () {
+        Route::post('/create', [BrandController::class, 'create']);
+        Route::put('/{uuid}', [BrandController::class, 'edit']);
+        Route::delete('/{uuid}', [BrandController::class, 'delete']);
+    });
+    Route::get('/{uuid}', [BrandController::class, 'getByUuid']);
+});
+
+Route::middleware('api')
+    ->get('v1/brands', [BrandController::class, 'brandListing']);
