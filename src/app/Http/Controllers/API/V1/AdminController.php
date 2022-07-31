@@ -4,12 +4,11 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Requests\AdminUserEditRequest;
 use App\Http\Requests\CreateAdminRequest;
-use App\Http\Resources\CreateAdminResource;
+use App\Http\Resources\UserWithTokenResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class AdminController extends BaseController
 {
@@ -52,12 +51,11 @@ class AdminController extends BaseController
         $data = $request->validated();
 
         $data['is_admin'] = 1;
-        $data['password'] = Hash::make($data['password']);
 
         //create new user
         $user = User::create($data);
 
-        return $this->successWithJsonResource(CreateAdminResource::make($user));
+        return $this->successWithJsonResource(UserWithTokenResource::make($user));
     }
 
     /**
