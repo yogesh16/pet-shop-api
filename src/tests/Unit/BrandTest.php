@@ -4,19 +4,19 @@
 namespace Tests\Unit;
 
 
-use App\Models\Category;
+use App\Models\Brand;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-class CategoryTest extends TestCase
+class BrandTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_user_can_create_category()
+    public function test_user_can_create_brand()
     {
-        $this->json('POST', '/api/v1/category/create', ['title' => 'category new'], $this->getHeaders())
+        $this->json('POST', '/api/v1/brand/create', ['title' => 'brand new'], $this->getHeaders())
             ->assertStatus(200)
             ->assertJsonStructure([
                                       "success",
@@ -28,16 +28,16 @@ class CategoryTest extends TestCase
                                       "extra"
                                   ]);
 
-        $this->assertDatabaseCount('categories', 1);
+        $this->assertDatabaseCount('brands', 1);
     }
 
-    public function test_user_can_edit_category()
+    public function test_user_can_edit_brand()
     {
-        $category = Category::factory()->create();
-        $data['title'] = 'New Pet Store';
+        $brand = Brand::factory()->create();
+        $data['title'] = 'Kai';
         $data['slug'] = Str::slug($data['title']);
 
-        $this->json('PUT', '/api/v1/category/' . $category->uuid , $data, $this->getHeaders())
+        $this->json('PUT', '/api/v1/brand/' . $brand->uuid , $data, $this->getHeaders())
             ->assertStatus(200)
             ->assertJsonStructure([
                                       "success",
@@ -53,19 +53,19 @@ class CategoryTest extends TestCase
                                       "extra"
                                   ]);
 
-        $category = $category->fresh();
+        $brand = $brand->fresh();
 
-        $this->assertEquals($data['title'], $category->title);
-        $this->assertEquals($data['slug'], $category->slug);
+        $this->assertEquals($data['title'], $brand->title);
+        $this->assertEquals($data['slug'], $brand->slug);
     }
 
-    public function test_user_can_delete_category()
+    public function test_user_can_delete_brand()
     {
-        $category = Category::factory()->create();
+        $brand = Brand::factory()->create();
 
-        $this->assertDatabaseCount('categories', 1);
+        $this->assertDatabaseCount('brands', 1);
 
-        $this->json('DELETE', '/api/v1/category/' . $category->uuid , [], $this->getHeaders())
+        $this->json('DELETE', '/api/v1/brand/' . $brand->uuid , [], $this->getHeaders())
             ->assertStatus(200)
             ->assertJsonStructure([
                                       "success",
@@ -75,14 +75,14 @@ class CategoryTest extends TestCase
                                       "extra"
                                   ]);
 
-        $this->assertDatabaseCount('categories', 0);
+        $this->assertDatabaseCount('brands', 0);
     }
 
-    public function test_user_can_fetch_category()
+    public function test_user_can_fetch_brand()
     {
-        $category = Category::factory()->create();
+        $brand = Brand::factory()->create();
 
-        $content = $this->json('GET', '/api/v1/category/' . $category->uuid , [], $this->getHeaders())
+        $content = $this->json('GET', '/api/v1/brand/' . $brand->uuid , [], $this->getHeaders())
             ->assertStatus(200)
             ->assertJsonStructure([
                                       "success",
@@ -99,14 +99,14 @@ class CategoryTest extends TestCase
                                   ])
             ->decodeResponseJson();
 
-        $this->assertEquals($category->uuid, $content['data']['uuid']);
+        $this->assertEquals($brand->uuid, $content['data']['uuid']);
     }
 
     public function test_user_can_list_categories()
     {
-        Category::factory(15)->create();
+        Brand::factory(15)->create();
 
-        $content = $this->json('GET', '/api/v1/categories', [], ['Accept' => 'application/json'])
+        $content = $this->json('GET', '/api/v1/brands', [], ['Accept' => 'application/json'])
             ->assertStatus(200)
             ->assertJsonStructure([
                                       "current_page",
