@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Requests\FileUploadRequest;
-use App\Http\Resources\FileResource;
-use App\Models\File;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ProductController extends BaseController
 {
@@ -110,6 +106,6 @@ class ProductController extends BaseController
         //get paginated data
         $data = $products->paginate($perPage);
 
-        return response()->json($data, 200);
+        return $this->successWithJsonResource(ProductResource::collection($data));
     }
 }

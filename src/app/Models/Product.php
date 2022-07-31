@@ -6,6 +6,7 @@ use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
@@ -36,7 +37,7 @@ class Product extends Model
         'description',
         'metadata',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     /**
@@ -50,6 +51,36 @@ class Product extends Model
     ];
 
     /**
+     * Get category
+     *
+     * @return BelongsTo
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'category_uuid', 'uuid');
+    }
+
+    /**
+     * Get Brand
+     *
+     * @return Brand
+     */
+    public function getBrandAttribute(): Brand
+    {
+        return Brand::uuid($this->metadata['brand'])->first();
+    }
+
+    /**
+     * Get Image File
+     *
+     * @return File
+     */
+    public function getFileAttribute(): File
+    {
+        return File::uuid($this->metadata['image'])->first();
+    }
+
+    /**
      * @param Request $request
      *
      * @return Builder
@@ -60,7 +91,7 @@ class Product extends Model
 
         $keys = [
             'price',
-            'title'
+            'title',
         ];
 
         $data = Collection::make($request->all())->only($keys);
@@ -69,11 +100,11 @@ class Product extends Model
             $query->orWhere($key, 'LIKE', $value);
         }
 
-        if($request->has('category')) {
+        if ($request->has('category')) {
             $query->orWhere('category_uuid', $request->input('category'));
         }
 
-        if($request->has('brand')) {
+        if ($request->has('brand')) {
             $query->orWhere('metadata->brand', $request->input('brand'));
         }
 
