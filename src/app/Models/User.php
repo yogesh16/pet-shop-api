@@ -176,18 +176,6 @@ class User extends Authenticatable
     /**
      * @param Builder $query
      *
-     * @param string $uuid
-     *
-     * @return mixed
-     */
-    public function scopeUuid(Builder $query, string $uuid): Builder
-    {
-        return $query->where('uuid', $uuid);
-    }
-
-    /**
-     * @param Builder $query
-     *
      * @return Builder
      */
     public function scopeNotAdmin(Builder $query): Builder

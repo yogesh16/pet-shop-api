@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 trait Uuids
@@ -17,5 +18,17 @@ trait Uuids
                 $model->uuid = Str::uuid()->toString();
             }
         );
+    }
+
+    /**
+     * @param Builder $query
+     *
+     * @param string $uuid
+     *
+     * @return mixed
+     */
+    public function scopeUuid(Builder $query, string $uuid): Builder
+    {
+        return $query->where('uuid', $uuid);
     }
 }
