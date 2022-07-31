@@ -2,7 +2,6 @@
 
 namespace App\Extensions;
 
-use Carbon\Carbon;
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
@@ -84,8 +83,6 @@ class AccessTokenGuard implements Guard
         // the given credentials, and if they are in fact valid
         // we'll log the users into the application and return true.
         if ($user && $this->hasValidCredentials($user, $credentials)) {
-            $user->last_login_at = Carbon::now();
-            $user->save();
             $this->user = $user;
             return true;
         }
