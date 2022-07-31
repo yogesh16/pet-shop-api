@@ -21,7 +21,6 @@ use Lcobucci\JWT\Validation\Constraint\SignedWith;
  */
 class JWTService
 {
-
     public static function getToken(User $user): string
     {
         $config = self::getConfig();
