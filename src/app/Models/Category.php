@@ -5,7 +5,17 @@ namespace App\Models;
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
+/**
+ * Class Category.
+ *
+ * @OA\Schema(
+ *     title="Category model",
+ *     description="Category model",
+ *     required={"title"},
+ * )
+ */
 class Category extends Model
 {
     use HasFactory;
@@ -33,12 +43,14 @@ class Category extends Model
     private $title;
 
     /**
-     * @OA\Property(
-     *     description="Slug",
-     *     title="Slug",
-     * )
+     * Set slug
      *
-     * @var string
+     * @param string $value
      */
-    private $slug;
+    public function setTitleAttribute(string $value)
+    {
+        $this->attributes['title'] = $value;
+
+        $this->attributes['slug'] = Str::slug($value);
+    }
 }

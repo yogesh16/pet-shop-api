@@ -60,7 +60,7 @@
             "@php artisan ide-helper:meta"
         ],
         "phpstant": [
-            "@php ./vendor/bin/phpstan analyse app"
+            "@php ./vendor/bin/phpstan analyse app --memory-limit=1G"
         ]
     },
     "extra": {
