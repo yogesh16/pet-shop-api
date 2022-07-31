@@ -31,7 +31,7 @@ class AdminUserEditRequest extends BaseRequest
                 'required',
                 'email',
                 Rule::unique('users')
-                    ->ignore($this->route('uuid'), 'uuid')
+                    ->ignore($this->route('uuid'), 'uuid'),
             ],
             'password' => 'required|confirmed|min:6',
             'avatar' => 'sometimes|string   ',

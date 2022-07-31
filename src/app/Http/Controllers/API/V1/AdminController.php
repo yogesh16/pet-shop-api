@@ -4,8 +4,8 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Requests\AdminUserEditRequest;
 use App\Http\Requests\CreateAdminRequest;
-use App\Http\Resources\UserWithTokenResource;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\UserWithTokenResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -42,6 +42,7 @@ class AdminController extends BaseController
      *         {"bearerAuth": {}}
      *     }
      * )
+     *
      * @param CreateAdminRequest $request
      *
      * @return JsonResponse
@@ -158,6 +159,7 @@ class AdminController extends BaseController
      *         {"bearerAuth": {}}
      *     }
      * )
+     *
      * @param Request $request
      *
      * @return JsonResponse
@@ -213,6 +215,7 @@ class AdminController extends BaseController
      *         {"bearerAuth": {}}
      *     }
      * )
+     *
      * @param Request $request
      *
      * @return JsonResponse
@@ -225,9 +228,8 @@ class AdminController extends BaseController
         //Get non admin user using uuid
         $user = User::uuid($uuid)->notAdmin()->first();
 
-        if(! isset($user->id))
-        {
-            return $this->error('User not found',404);
+        if (! isset($user->id)) {
+            return $this->error('User not found', 404);
         }
 
         //Update user
@@ -273,6 +275,7 @@ class AdminController extends BaseController
      *         {"bearerAuth": {}}
      *     }
      * )
+     *
      * @param Request $request
      *
      * @return JsonResponse
@@ -282,9 +285,8 @@ class AdminController extends BaseController
         //Get non admin user using uuid
         $user = User::uuid($uuid)->notAdmin()->first();
 
-        if(! isset($user->id))
-        {
-            return $this->error('User not found',404);
+        if (! isset($user->id)) {
+            return $this->error('User not found', 404);
         }
 
         //Delete user

@@ -17,7 +17,7 @@ trait ApiResponse
     protected function successWithJsonResource(JsonResource $data, int $code = 200): JsonResponse
     {
         return response()->json([
-            'success'=> 1,
+            'success' => 1,
             'data' => $data,
             'error' => null,
             'errors' => [],
@@ -35,7 +35,7 @@ trait ApiResponse
     protected function success(array $data, int $code = 200): JsonResponse
     {
         return response()->json([
-            'success'=> 1,
+            'success' => 1,
             'data' => $data,
             'error' => null,
             'errors' => [],
@@ -54,14 +54,12 @@ trait ApiResponse
      *
      * @return JsonResponse
      */
-    protected function error
-    (
+    protected function error(
         string $message,
         int $code = 422,
         array $errors = [],
         array $trace = []
-    ): JsonResponse
-    {
+    ): JsonResponse {
         return response()->json([
             'success' => 0,
             'data' => [],

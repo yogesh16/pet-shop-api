@@ -50,7 +50,6 @@ class Handler extends ExceptionHandler
         });
     }
 
-
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         return $this->error('Unauthenticated', 401);

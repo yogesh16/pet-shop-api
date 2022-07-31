@@ -39,6 +39,7 @@ class UserController extends BaseController
      *         {"bearerAuth": {}}
      *     }
      * )
+     *
      * @param CreateUserRequest $request
      *
      * @return JsonResponse

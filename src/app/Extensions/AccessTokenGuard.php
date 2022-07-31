@@ -17,12 +17,10 @@ class AccessTokenGuard implements Guard
     private string $storageKey = '';
     private Request $request;
 
-    public function __construct
-    (
+    public function __construct(
         UserProvider $provider,
         Request $request
-    )
-    {
+    ) {
         $this->provider = $provider;
         $this->request = $request;
         // key to check in request
@@ -31,10 +29,9 @@ class AccessTokenGuard implements Guard
         $this->storageKey = 'access_token';
     }
 
-    public function user ()
+    public function user()
     {
-        if (isset($this->user->id))
-        {
+        if (isset($this->user->id)) {
             return $this->user;
         }
 
@@ -53,7 +50,7 @@ class AccessTokenGuard implements Guard
      *
      * @return string
      */
-    public function getTokenForRequest (): string|null
+    public function getTokenForRequest(): string|null
     {
         return $this->request->bearerToken();
     }
@@ -65,14 +62,13 @@ class AccessTokenGuard implements Guard
      *
      * @return bool
      */
-    public function validate (array $credentials = [])
+    public function validate(array $credentials = [])
     {
         $credentials = [
-            $this->storageKey => $credentials[$this->inputKey] ?? null
+            $this->storageKey => $credentials[$this->inputKey] ?? null,
         ];
 
-        if ($this->provider->retrieveByCredentials($credentials))
-        {
+        if ($this->provider->retrieveByCredentials($credentials)) {
             return true;
         }
 
@@ -81,15 +77,13 @@ class AccessTokenGuard implements Guard
 
     public function attempt(array $credentials = [], bool $remember = false): bool
     {
-
         $user = $this->provider->retrieveByCredentials($credentials);
 
         // If an implementation of UserInterface was returned,
         // we'll ask the provider to validate the user against
         // the given credentials, and if they are in fact valid
         // we'll log the users into the application and return true.
-        if ($user && $this->hasValidCredentials($user, $credentials))
-        {
+        if ($user && $this->hasValidCredentials($user, $credentials)) {
             $user->last_login_at = Carbon::now();
             $user->save();
             $this->user = $user;

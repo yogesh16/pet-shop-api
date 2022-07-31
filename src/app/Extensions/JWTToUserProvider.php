@@ -12,20 +12,19 @@ class JWTToUserProvider implements UserProvider
     private JwtToken $token;
     private User $user;
 
-    public function __construct (User $user, JwtToken $token)
+    public function __construct(User $user, JwtToken $token)
     {
         $this->user = $user;
         $this->token = $token;
     }
 
-    public function retrieveById ($identifier)
+    public function retrieveById($identifier)
     {
         return $this->user->find($identifier);
     }
 
-    public function retrieveByToken ($identifier, $token)
+    public function retrieveByToken($identifier, $token)
     {
-
         $token = $this->token->with('user')
             ->where($identifier, $token)
             ->first();
@@ -33,26 +32,23 @@ class JWTToUserProvider implements UserProvider
         return $token && $token->user ? $token->user : null;
     }
 
-    public function updateRememberToken (Authenticatable $user, $token)
+    public function updateRememberToken(Authenticatable $user, $token)
     {
     }
 
-    public function retrieveByCredentials (array $credentials)
+    public function retrieveByCredentials(array $credentials)
     {
-
         $user = User::where('email', $credentials['email'])->first();
 
-        if($this->validateCredentials($user, $credentials)){
+        if ($this->validateCredentials($user, $credentials)) {
             return $user;
         }
     }
 
-    public function validateCredentials
-    (
+    public function validateCredentials(
         Authenticatable $user,
         array $credentials
-    )
-    {
+    ) {
         $plain = $credentials['password'];
 
         return app('hash')
