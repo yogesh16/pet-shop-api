@@ -62,6 +62,23 @@ class FileTest extends TestCase
         $this->assertDatabaseCount('files', 0);
     }
 
+    public function test_user_can_download_file()
+    {
+        Storage::fake('local');
+
+        $file = UploadedFile::fake()->image('pet.png');
+
+        $content = $this->json('POST', '/api/v1/file/upload', ['file' => $file], $this->getHeaders())
+            ->assertStatus(200)
+            ->decodeResponseJson();
+
+        $this->assertDatabaseCount('files', 1);
+
+        $this->json('GET', '/api/v1/file/' . $content['data']['uuid'], [], ['Accept' => 'application/json'])
+            ->assertStatus(200)
+            ->assertHeader('Content-Disposition', 'attachment; filename='.$file->name);
+
+    }
 
     //get headers array
     private function getHeaders($user = null)
