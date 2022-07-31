@@ -21,24 +21,6 @@ use Lcobucci\JWT\Validation\Constraint\SignedWith;
  */
 class JWTService
 {
-    private static function getConfig(): Configuration
-    {
-        $config = Configuration::forAsymmetricSigner
-        (
-            new Signer\Rsa\Sha256(),
-            InMemory::file(storage_path('app/key/jwtRS256.key')),
-            InMemory::file(storage_path('app/key/jwtRS256.key.pub'))
-        );
-
-        $config->setValidationConstraints
-        (
-            new IssuedBy(config('app.url')),
-            new PermittedFor(config('app.url')),
-            new SignedWith($config->signer(), $config->verificationKey())
-        );
-
-        return $config;
-    }
 
     public static function getToken(User $user): string
     {
@@ -72,12 +54,9 @@ class JWTService
         $config = self::getConfig();
         $parsed = $config->parser()->parse($token);
         $constraints = $config->validationConstraints();
-        try
-        {
+        try {
             $config->validator()->assert($parsed, ...$constraints);
-        }
-        catch(\Exception $exp)
-        {
+        } catch (\Exception $exp) {
             Log::error('JWTService.parseToken', [json_encode($exp)]);
             return null;
         }
@@ -85,5 +64,22 @@ class JWTService
         $claims = $parsed->claims();
 
         return User::uuid($claims->get('user_uuid'))->first();
+    }
+
+    private static function getConfig(): Configuration
+    {
+        $config = Configuration::forAsymmetricSigner(
+            new Signer\Rsa\Sha256(),
+            InMemory::file(storage_path('app/key/jwtRS256.key')),
+            InMemory::file(storage_path('app/key/jwtRS256.key.pub'))
+        );
+
+        $config->setValidationConstraints(
+            new IssuedBy(config('app.url')),
+            new PermittedFor(config('app.url')),
+            new SignedWith($config->signer(), $config->verificationKey())
+        );
+
+        return $config;
     }
 }

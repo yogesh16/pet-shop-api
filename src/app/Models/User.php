@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
-use phpDocumentor\Reflection\Types\Boolean;
 
 /**
  * Class User.
@@ -33,6 +32,45 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
     use Uuids;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'uuid',
+        'first_name',
+        'last_name',
+        'is_admin',
+        'email',
+        'password',
+        'avatar',
+        'address',
+        'phone_number',
+        'is_marketing',
+        'last_login_at',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'last_login_at' => 'datetime',
+    ];
 
     /**
      * @OA\Property(
@@ -126,45 +164,6 @@ class User extends Authenticatable
     private $is_marketing;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'uuid',
-        'first_name',
-        'last_name',
-        'is_admin',
-        'email',
-        'password',
-        'avatar',
-        'address',
-        'phone_number',
-        'is_marketing',
-        'last_login_at',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'last_login_at' => 'datetime',
-    ];
-
-    /**
      * Encrypt password attribute
      *
      * @param string $value
@@ -238,20 +237,17 @@ class User extends Authenticatable
 
         $data = Collection::make($request->all())->only($keys);
 
-        foreach ($data as $key => $value)
-        {
+        foreach ($data as $key => $value) {
             $query->orWhere($key, 'LIKE', $value);
         }
 
-        if($request->has('created_at'))
-        {
-            $date = date("Y-m-d", strtotime($request->input('created_at')));
+        if ($request->has('created_at')) {
+            $date = date('Y-m-d', strtotime($request->input('created_at')));
 
             $query->orWhereDate('created_at', $date);
         }
 
-        if($request->has('sortBy'))
-        {
+        if ($request->has('sortBy')) {
             $isDesc = $request->has('desc') ? $request->input('desc') : false;
 
             $query->orderBy($request->input('sortBy'), $isDesc === true ? 'DESC' : 'ASC');

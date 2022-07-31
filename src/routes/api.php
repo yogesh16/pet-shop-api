@@ -17,13 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => ['api'], 'prefix' => 'v1/admin'], function()
-{
+Route::group(['middleware' => ['api'], 'prefix' => 'v1/admin'], function () {
     Route::post('/login', [AdminAuthController::class, 'login']);
 
     //Only authorized request can access following API Endpoints.
-    Route::group(['middleware' => ['auth', 'is-admin']], function()
-    {
+    Route::group(['middleware' => ['auth', 'is-admin']], function () {
         Route::get('/logout', [AdminAuthController::class, 'logout']);
         Route::post('/create', [AdminController::class, 'create']);
         Route::get('/user-listing', [AdminController::class, 'userListing']);
@@ -32,8 +30,7 @@ Route::group(['middleware' => ['api'], 'prefix' => 'v1/admin'], function()
     });
 });
 
-Route::group(['middleware' => ['api'], 'prefix' => 'v1/user'], function()
-{
+Route::group(['middleware' => ['api'], 'prefix' => 'v1/user'], function () {
     Route::post('/login', [UserAuthController::class, 'login']);
     Route::post('/create', [UserController::class, 'create']);
 });
