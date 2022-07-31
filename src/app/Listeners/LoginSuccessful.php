@@ -3,8 +3,10 @@
 namespace App\Listeners;
 
 use App\Events\UserLogin;
+use App\Mail\UserLoginMail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class LoginSuccessful
 {
@@ -30,6 +32,10 @@ class LoginSuccessful
 
         //update last login time
         $user->last_login_at = Carbon::now();
+        $user->save();
+
+        Mail::to($user->email)
+            ->send(new UserLoginMail($user->fresh()));
 
         Log::debug('[LoginEvent]', ['Last lgoin updated']);
     }

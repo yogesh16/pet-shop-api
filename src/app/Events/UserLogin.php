@@ -13,7 +13,9 @@ use Illuminate\Queue\SerializesModels;
 
 class UserLogin
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     /**
      * User
