@@ -63,21 +63,21 @@ class Product extends Model
     /**
      * Get Brand
      *
-     * @return Brand
+     * @return Brand|null
      */
-    public function getBrandAttribute(): Brand
+    public function getBrandAttribute(): Brand|null
     {
-        return Brand::uuid($this->metadata['brand'])->first();
+        return Brand::uuid($this->metadata['brand'] ?? '')->first();
     }
 
     /**
      * Get Image File
      *
-     * @return File
+     * @return File|null
      */
-    public function getFileAttribute(): File
+    public function getFileAttribute(): File|null
     {
-        return File::uuid($this->metadata['image'])->first();
+        return File::uuid($this->metadata['image'] ?? '')->first();
     }
 
     /**
