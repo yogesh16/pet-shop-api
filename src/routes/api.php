@@ -6,6 +6,7 @@ use App\Http\Controllers\API\V1\Auth\UserAuthController;
 use App\Http\Controllers\API\V1\BrandController;
 use App\Http\Controllers\API\V1\CategoryController;
 use App\Http\Controllers\API\V1\FileController;
+use App\Http\Controllers\API\V1\ProductController;
 use App\Http\Controllers\API\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -66,3 +67,6 @@ Route::middleware(['api', 'auth'])
     ->post('v1/file/upload', [FileController::class, 'fileUpload']);
 Route::middleware(['api'])
     ->get('v1/file/{uuid}', [FileController::class, 'readFile']);
+
+Route::middleware(['api'])
+    ->get('v1/products', [ProductController::class, 'productListing']);

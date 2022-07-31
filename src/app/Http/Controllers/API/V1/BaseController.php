@@ -50,6 +50,11 @@ use Illuminate\Routing\Controller;
  * )
  *
  * @OA\Tag(
+ *     name="Product",
+ *     description="Products API endpoint"
+ * )
+ *
+ * @OA\Tag(
  *     name="File",
  *     description="File API endpoint"
  * )
