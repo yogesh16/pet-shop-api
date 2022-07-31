@@ -5,6 +5,7 @@ use App\Http\Controllers\API\V1\Auth\AdminAuthController;
 use App\Http\Controllers\API\V1\Auth\UserAuthController;
 use App\Http\Controllers\API\V1\BrandController;
 use App\Http\Controllers\API\V1\CategoryController;
+use App\Http\Controllers\API\V1\FileController;
 use App\Http\Controllers\API\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -60,3 +61,6 @@ Route::group(['middleware' => ['api'], 'prefix' => 'v1/brand'], function () {
 
 Route::middleware('api')
     ->get('v1/brands', [BrandController::class, 'brandListing']);
+
+Route::middleware(['api', 'auth'])
+    ->post('v1/file/upload', [FileController::class, 'fileUpload']);

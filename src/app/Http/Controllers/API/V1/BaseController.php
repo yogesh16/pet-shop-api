@@ -48,6 +48,11 @@ use Illuminate\Routing\Controller;
  *     name="Brand",
  *     description="Brands API endpoint"
  * )
+ *
+ * @OA\Tag(
+ *     name="File",
+ *     description="File API endpoint"
+ * )
  */
 class BaseController extends Controller
 {

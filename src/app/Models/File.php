@@ -32,5 +32,4 @@ class File extends Model
         'size',
         'type',
     ];
-
 }
