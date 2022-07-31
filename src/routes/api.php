@@ -37,8 +37,13 @@ Route::group(['middleware' => ['api'], 'prefix' => 'v1/user'], function () {
 });
 
 Route::group(['middleware' => ['api'], 'prefix' => 'v1/category'], function () {
-    Route::post('/create', [CategoryController::class, 'create']);
-    Route::put('/{uuid}', [CategoryController::class, 'edit']);
-    Route::delete('/{uuid}', [CategoryController::class, 'delete']);
+    Route::group(['middleware' => ['auth']], function () {
+        Route::post('/create', [CategoryController::class, 'create']);
+        Route::put('/{uuid}', [CategoryController::class, 'edit']);
+        Route::delete('/{uuid}', [CategoryController::class, 'delete']);
+    });
     Route::get('/{uuid}', [CategoryController::class, 'getByUuid']);
 });
+
+Route::middleware('api')
+    ->get('v1/categories', [CategoryController::class, 'categoryListing']);

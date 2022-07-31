@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Traits\Uuids;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 /**
@@ -52,5 +54,23 @@ class Category extends Model
         $this->attributes['title'] = $value;
 
         $this->attributes['slug'] = Str::slug($value);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Builder
+     */
+    public static function filter(Request $request): Builder
+    {
+        $query = Category::query();
+
+        if ($request->has('sortBy')) {
+            $isDesc = $request->has('desc') ? $request->input('desc') : false;
+
+            $query->orderBy($request->input('sortBy'), $isDesc === true ? 'DESC' : 'ASC');
+        }
+
+        return $query;
     }
 }

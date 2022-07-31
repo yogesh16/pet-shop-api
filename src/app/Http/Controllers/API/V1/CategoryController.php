@@ -6,6 +6,7 @@ use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class CategoryController extends BaseController
 {
@@ -203,10 +204,7 @@ class CategoryController extends BaseController
      *     @OA\Response(
      *         response=500,
      *         description="Internal server error"
-     *     ),
-     *     security={
-     *         {"bearerAuth": {}}
-     *     }
+     *     )
      * )
      *
      * @param string $uuid
@@ -223,5 +221,77 @@ class CategoryController extends BaseController
         }
 
         return $this->successWithJsonResource(CategoryResource::make($category));
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/v1/categories",
+     *     tags={"Category"},
+     *     summary="List all categories",
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="page",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="limit",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="sortBy",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="desc",
+     *          @OA\Schema(
+     *              type="boolean"
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Page not found"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Unprocessable Entity"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error"
+     *     )
+     * )
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function categoryListing(Request $request): JsonResponse
+    {
+        $perPage = $request->has('limit') ? $request->input('limit') : 10;
+
+        //get query builder
+        $categories = Category::filter($request);
+
+        //get paginated data
+        $data = $categories->paginate($perPage);
+
+        return response()->json($data, 200);
     }
 }

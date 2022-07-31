@@ -100,6 +100,31 @@ class CategoryTest extends TestCase
         $this->assertEquals($category->uuid, $content['data']['uuid']);
     }
 
+    public function test_user_can_list_categories()
+    {
+        Category::factory(15)->create();
+
+        $content = $this->json('GET', '/api/v1/categories', [], ['Accept' => 'application/json'])
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                                      "current_page",
+                                      "data",
+                                      "first_page_url",
+                                      "from",
+                                      "last_page",
+                                      "last_page_url",
+                                      "links",
+                                      "next_page_url",
+                                      "path",
+                                      "per_page",
+                                      "prev_page_url",
+                                      "to",
+                                      "total"
+                                  ]);
+
+        $this->assertCount(10, $content['data']);
+    }
+
     //get headers array
     private function getHeaders($user = null)
     {

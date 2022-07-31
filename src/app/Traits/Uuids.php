@@ -7,7 +7,6 @@ use Illuminate\Support\Str;
 
 trait Uuids
 {
-
     /**
      * @param Builder $query
      *
