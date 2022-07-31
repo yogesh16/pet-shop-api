@@ -38,4 +38,5 @@ Route::group(['middleware' => ['api'], 'prefix' => 'v1/user'], function () {
 
 Route::group(['middleware' => ['api'], 'prefix' => 'v1/category'], function () {
     Route::post('/create', [CategoryController::class, 'create']);
+    Route::put('/{uuid}', [CategoryController::class, 'edit']);
 });
