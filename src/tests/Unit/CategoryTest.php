@@ -76,6 +76,29 @@ class CategoryTest extends TestCase
         $this->assertDatabaseCount('categories', 0);
     }
 
+    public function test_user_can_fetch_category()
+    {
+        $category = Category::factory()->create();
+
+        $content = $this->json('GET', '/api/v1/category/' . $category->uuid , [], $this->getHeaders())
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                                      "success",
+                                      "data" => [
+                                          "uuid",
+                                          "title",
+                                          "slug",
+                                          "created_at",
+                                          "updated_at"
+                                      ],
+                                      "error",
+                                      "errors",
+                                      "extra"
+                                  ])
+            ->decodeResponseJson();
+
+        $this->assertEquals($category->uuid, $content['data']['uuid']);
+    }
 
     //get headers array
     private function getHeaders($user = null)
