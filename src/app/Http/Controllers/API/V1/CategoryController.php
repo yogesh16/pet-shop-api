@@ -114,4 +114,61 @@ class CategoryController extends BaseController
 
         return $this->successWithJsonResource(CategoryResource::make($category->fresh()));
     }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/v1/category/{uuid}",
+     *     tags={"Category"},
+     *     summary="Delete an existing catetory",
+     *     @OA\Parameter(
+     *          in="path",
+     *          name="uuid",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Page not found"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Unprocessable Entity"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error"
+     *     ),
+     *     security={
+     *         {"bearerAuth": {}}
+     *     }
+     * )
+     *
+     * @param string $uuid
+     *
+     * @return JsonResponse
+     */
+    public function delete(string $uuid): JsonResponse
+    {
+        //Get category using uuid
+        $category = Category::uuid($uuid)->first();
+
+        if (! isset($category->id)) {
+            return $this->error('Category not found', 404);
+        }
+
+        //Delete category
+        $category->delete();
+
+        return $this->success([]);
+    }
 }

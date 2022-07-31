@@ -57,6 +57,25 @@ class CategoryTest extends TestCase
         $this->assertEquals($data['slug'], $category->slug);
     }
 
+    public function test_user_can_delete_category()
+    {
+        $category = Category::factory()->create();
+
+        $this->assertDatabaseCount('categories', 1);
+
+        $this->json('DELETE', '/api/v1/category/' . $category->uuid , [], $this->getHeaders())
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                                      "success",
+                                      "data",
+                                      "error",
+                                      "errors",
+                                      "extra"
+                                  ]);
+
+        $this->assertDatabaseCount('categories', 0);
+    }
+
 
     //get headers array
     private function getHeaders($user = null)
