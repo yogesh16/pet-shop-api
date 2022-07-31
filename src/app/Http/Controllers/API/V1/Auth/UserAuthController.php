@@ -12,7 +12,7 @@ class UserAuthController extends BaseController
     /**
      * @OA\Post(
      *     path="/api/v1/user/login",
-     *     tags={"Admin"},
+     *     tags={"User"},
      *     summary="Login an User account",
      *     @OA\RequestBody(
      *         required=true,
