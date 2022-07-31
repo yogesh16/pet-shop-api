@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
+use App\Events\UserLogin;
+use App\Listeners\LoginSuccessful;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use App\Events\UserLogin;
-use App\Listeners\LoginSuccessful;
 
 class EventServiceProvider extends ServiceProvider
 {

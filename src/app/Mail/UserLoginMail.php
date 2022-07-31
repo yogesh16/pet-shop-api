@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -39,10 +38,10 @@ class UserLoginMail extends Mailable
     {
         return $this->from(env('MAIL_FROM_ADDRESS'))
             ->subject('Login notification')
-            ->markdown('emails.user.login',[
+            ->markdown('emails.user.login', [
                 'name' => $this->user->first_name,
                 'ip' => request()->ip(),
-                'login_at' => $this->user->last_login_at->format('d-M-Y h:i A')
+                'login_at' => $this->user->last_login_at->format('d-M-Y h:i A'),
             ]);
         return $this->view('emails.user.login');
     }
