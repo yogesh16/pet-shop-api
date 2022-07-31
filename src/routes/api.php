@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\V1\AdminController;
 use App\Http\Controllers\API\V1\Auth\AdminAuthController;
 use App\Http\Controllers\API\V1\Auth\UserAuthController;
+use App\Http\Controllers\API\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,4 +35,5 @@ Route::group(['middleware' => ['api'], 'prefix' => 'v1/admin'], function()
 Route::group(['middleware' => ['api'], 'prefix' => 'v1/user'], function()
 {
     Route::post('/login', [UserAuthController::class, 'login']);
+    Route::post('/create', [UserController::class, 'create']);
 });
