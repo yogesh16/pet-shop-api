@@ -1,0 +1,26 @@
+{
+    "name": "petshop/currency-exchange-rate",
+    "description": "Currency exchange rate using European Central Bank daily reference",
+    "autoload": {
+        "psr-4": {
+            "Petshop\\CurrencyExchangeRate\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "yogesh",
+            "email": "yogesh.patel@outlook.in"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "guzzlehttp/guzzle": "7.4.x-dev"
+    },
+    "extra" : {
+        "laravel": {
+            "providers": [
+                "Petshop\\CurrencyExchangeRate\\CurrencyExchangeRateServiceProvider"
+            ]
+        }
+    }
+}
