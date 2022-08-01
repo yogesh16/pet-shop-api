@@ -6,16 +6,28 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class Currency
 {
     //Get converted price
-    public static function get(string $from, string $to, float $price): float
+    public static function convert(string $currency, float $amount): string
     {
-        dd(Currency::getExchangeRate()->where('currency', 'JPY')->first());
-        return $price;
+        //Get today's rate
+        $rates = Currency::getExchangeRate();
+
+        $item = $rates->where('currency', Str::upper($currency))->first();
+
+        $convertedAmount = isset($item) && is_array($item) ? $item['rate'] * $amount : 0;
+
+        return number_format(floatval($convertedAmount), 2);
     }
 
+    /**
+     * Get Today's Currency Rate from Bank
+     *
+     * @return Collection
+     */
     private static function getExchangeRate(): Collection
     {
         try {
