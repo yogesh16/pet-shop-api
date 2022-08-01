@@ -1,6 +1,6 @@
 <?php
 
-namespace Petshop\CurrencyExchangeRate;
+namespace Petshop\CurrencyExchangeRate\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -10,11 +10,11 @@ class CurrencyExchangeRateServiceProvider extends ServiceProvider
     {
         //Publish config file
         $this->publishes([
-            __DIR__ . '/../config/currencyexchange.php' => config_path('currencyexchange.php'),
+            __DIR__ . '../../config/currencyexchange.php' => config_path('currencyexchange.php'),
         ]);
 
         //Load API Routes
-        $this->loadRoutesFrom(__DIR__ . '/routes/api.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
     }
 
     public function register()

@@ -6,6 +6,11 @@
             "Petshop\\CurrencyExchangeRate\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Petshop\\CurrencyExchangeRate\\Tests\\": "tests"
+        }
+    },
     "authors": [
         {
             "name": "yogesh",
@@ -19,8 +24,11 @@
     "extra" : {
         "laravel": {
             "providers": [
-                "Petshop\\CurrencyExchangeRate\\CurrencyExchangeRateServiceProvider"
+                "Petshop\\CurrencyExchangeRate\\Providers\\CurrencyExchangeRateServiceProvider"
             ]
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "10.0.x-dev"
     }
 }
