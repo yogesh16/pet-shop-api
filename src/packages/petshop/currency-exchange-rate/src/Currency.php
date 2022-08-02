@@ -5,6 +5,7 @@ namespace Petshop\CurrencyExchangeRate;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -14,7 +15,20 @@ class Currency
     public static function convert(string $currency, float $amount): string
     {
         //Get today's rate
-        $rates = Currency::getExchangeRate();
+
+        /*$rates = Cache::get('CurrencyExchangeRates', function() {
+            return Currency::getExchangeRate()->toJson();
+        }, 10 * 60);*/
+
+        $rates = null;
+
+        if (Cache::has('CurrencyExchangeRates')) {
+            $rates = collect(json_decode(Cache::get('CurrencyExchangeRates'), true));
+        } else {
+            $rates = Currency::getExchangeRate();
+            //Cache rates for 10min.
+            Cache::set('CurrencyExchangeRates', $rates->toJson(), 10 * 60);
+        }
 
         $item = $rates->where('currency', Str::upper($currency))->first();
 
