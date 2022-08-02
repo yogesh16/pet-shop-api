@@ -11,7 +11,7 @@ class CurrencyExchangeRateServiceProvider extends ServiceProvider
         //Publish config file
         $this->publishes([
             __DIR__ . '/../../config/currencyexchange.php' => config_path('currencyexchange.php'),
-            __DIR__ . '/../resources/swagger' => public_path('vendor/currency-exchange-rate/swagger')
+            __DIR__ . '/../resources/swagger' => public_path('vendor/currency-exchange-rate/swagger'),
         ]);
 
         //Load API Routes

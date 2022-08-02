@@ -9,8 +9,8 @@ use Petshop\CurrencyExchangeRate\Http\Requests\RateRequest;
 /**
  * @OA\Info(
  *     description="This is API Documentation for Currency Exchange rate.
-This API uses [European Central Bank Reference rates](https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml) To convert Currency Exchange Rate.
-This API Support currency conversion from EURO Only",
+ * This API uses [European Central Bank Reference rates](https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml) To convert Currency Exchange Rate.
+ * This API Support currency conversion from EURO Only",
  *     title="Currency Exchange Rate API",
  *     version="1.0"
  * )
