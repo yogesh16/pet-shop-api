@@ -109,3 +109,11 @@ public function EuroToUsd()
 }
 ```
 
+## 📝 TODO
+
+- Add option to return currency symbol with converted amount
+    
+  for example 
+```php
+   Currency::convert('USD', 100, true); // return $ 102.11
+```  
