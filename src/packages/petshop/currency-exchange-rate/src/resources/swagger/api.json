@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Currency Exchange Rate API",
-        "description": "This is API Documentation for Currency Exchange rate.\nThis API uses [European Central Bank Reference rates](https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml) To convert Currency Exchange Rate.\nThis API Support currency conversion from EURO Only",
+        "description": "This is API Documentation for Currency Exchange rate.\n * This API uses [European Central Bank Reference rates](https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml) To convert Currency Exchange Rate.\n * This API Support currency conversion from EURO Only",
         "version": "1.0"
     },
     "paths": {

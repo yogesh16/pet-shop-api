@@ -36,6 +36,9 @@
     "scripts": {
         "post-autoload-dump": [
             "./vendor/bin/openapi src -o src/resources/swagger/api.json --format json"
+        ],
+        "test": [
+            "./vendor/bin/phpunit"
         ]
     }
 }
