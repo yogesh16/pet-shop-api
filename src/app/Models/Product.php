@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Petshop\CurrencyExchangeRate\Currency;
 
 /**
  * Class Product.
@@ -78,6 +79,20 @@ class Product extends Model
     public function getFileAttribute(): File|null
     {
         return File::uuid($this->metadata['image'] ?? '')->first();
+    }
+
+    /**
+     * Convert product price to given currency
+     * IF Illuminate\Http\Request contain the 'currency' key
+     *
+     * @return string
+     */
+    public function getPriceAttribute(): string
+    {
+        if (request()->has('currency')) {
+            return Currency::convert(request()->input('currency'), $this->attributes['price']);
+        }
+        return $this->attributes['price'];
     }
 
     /**

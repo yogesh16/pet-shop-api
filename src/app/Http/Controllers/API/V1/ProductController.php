@@ -70,6 +70,16 @@ class ProductController extends BaseController
      *              type="string"
      *          )
      *     ),
+     *     @OA\Parameter(
+     *          in="query",
+     *          name="currency",
+     *          @OA\Schema(
+     *              type="string",
+     *              enum={"USD", "JPY", "BGN", "CZK", "DKK", "GBP", "HUF", "PLN",
+     *     "RON", "SEK", "CHF", "ISK", "NOK", "HRK", "TRY", "AUD", "BRL", "CAD",
+     *     "CNY", "HKD", "IDR", "ILS", "INR", "KRW", "MXN", "NZD", "PHP", "SGD", "THB", "ZAR"},
+     *          ),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="OK"
