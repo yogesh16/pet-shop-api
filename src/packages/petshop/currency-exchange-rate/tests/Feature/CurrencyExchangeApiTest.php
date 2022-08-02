@@ -17,7 +17,7 @@ class CurrencyExchangeApiTest extends TestCase
             'amount' => 100
         ];
 
-        $this->json('GET', '/api/currency-exchange', $data, ['Accept' => 'application/json'])
+        $this->json('GET', '/api/v1/currency-exchange', $data, ['Accept' => 'application/json'])
             ->assertStatus(200)
             ->assertJsonStructure([
                 'success',
@@ -38,7 +38,7 @@ class CurrencyExchangeApiTest extends TestCase
             'currency' => 'USD'
         ];
 
-        $this->json('GET', '/api/currency-exchange', $data, ['Accept' => 'application/json'])
+        $this->json('GET', '/api/v1/currency-exchange', $data, ['Accept' => 'application/json'])
             ->assertStatus(422)
             ->assertJsonStructure([
                 'success',
@@ -61,7 +61,7 @@ class CurrencyExchangeApiTest extends TestCase
             'amount' => 100
         ];
 
-        $this->json('GET', '/api/currency-exchange', $data, ['Accept' => 'application/json'])
+        $this->json('GET', '/api/v1/currency-exchange', $data, ['Accept' => 'application/json'])
             ->assertStatus(422)
             ->assertJsonStructure([
                 'success',
@@ -85,7 +85,7 @@ class CurrencyExchangeApiTest extends TestCase
             'currency' => 'test'
         ];
 
-        $this->json('GET', '/api/currency-exchange', $data, ['Accept' => 'application/json'])
+        $this->json('GET', '/api/v1/currency-exchange', $data, ['Accept' => 'application/json'])
             ->assertStatus(422)
             ->assertJsonStructure([
                 'success',
