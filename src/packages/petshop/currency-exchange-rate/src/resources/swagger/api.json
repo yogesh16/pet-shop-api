@@ -1,0 +1,62 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Currency Exchange Rate API",
+        "description": "This is API Documentation for Currency Exchange rate.\nThis API uses [European Central Bank Reference rates](https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml) To convert Currency Exchange Rate.\nThis API Support currency conversion from EURO Only",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/v1/currency-exchange": {
+            "get": {
+                "tags": [
+                    "Currency"
+                ],
+                "summary": "Convert currency rate from Euro",
+                "operationId": "51d819026854f408d68df4c5119061cb",
+                "parameters": [
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "description": "Amount in Euro",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "currency",
+                        "in": "query",
+                        "description": "Currency code to convert from Euro",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Page not found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Currency",
+            "description": "Currency exchange rate endpoint"
+        }
+    ]
+}
