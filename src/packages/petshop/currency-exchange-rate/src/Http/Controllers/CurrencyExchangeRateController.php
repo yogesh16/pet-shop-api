@@ -43,8 +43,11 @@ class CurrencyExchangeRateController extends Controller
      *          required=true,
      *          description="Currency code to convert from Euro",
      *          @OA\Schema(
-     *              type="string"
-     *          )
+     *              type="string",
+     *              enum={"USD", "JPY", "BGN", "CZK", "DKK", "GBP", "HUF", "PLN",
+     *     "RON", "SEK", "CHF", "ISK", "NOK", "HRK", "TRY", "AUD", "BRL", "CAD",
+     *     "CNY", "HKD", "IDR", "ILS", "INR", "KRW", "MXN", "NZD", "PHP", "SGD", "THB", "ZAR"},
+     *          ),
      *     ),
      *     @OA\Response(
      *         response=200,
