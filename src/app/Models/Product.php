@@ -66,7 +66,7 @@ class Product extends Model
      *
      * @return Brand|null
      */
-    public function getBrandAttribute(): Brand|null
+    public function getBrandAttribute(): ?Brand
     {
         return Brand::uuid($this->metadata['brand'] ?? '')->first();
     }
@@ -76,7 +76,7 @@ class Product extends Model
      *
      * @return File|null
      */
-    public function getFileAttribute(): File|null
+    public function getFileAttribute(): ?File
     {
         return File::uuid($this->metadata['image'] ?? '')->first();
     }
