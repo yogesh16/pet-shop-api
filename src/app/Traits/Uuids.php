@@ -12,7 +12,7 @@ trait Uuids
      *
      * @param string $uuid
      *
-     * @return mixed
+     * @return Builder
      */
     public function scopeUuid(Builder $query, string $uuid): Builder
     {

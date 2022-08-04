@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Filters;
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,6 +25,7 @@ class Product extends Model
 {
     use HasFactory;
     use Uuids;
+    use Filters;
 
     /**
      * The attributes that are mass assignable.
@@ -109,11 +111,7 @@ class Product extends Model
             'title',
         ];
 
-        $data = Collection::make($request->all())->only($keys);
-
-        foreach ($data as $key => $value) {
-            $query->orWhere($key, 'LIKE', $value);
-        }
+        $query = self::commonFilter($query, $request, $keys);
 
         if ($request->has('category')) {
             $query->orWhere('category_uuid', $request->input('category'));
@@ -123,12 +121,6 @@ class Product extends Model
             $query->orWhere('metadata->brand', $request->input('brand'));
         }
 
-        if ($request->has('sortBy')) {
-            $isDesc = $request->has('desc') ? $request->input('desc') : false;
-
-            $query->orderBy($request->input('sortBy'), $isDesc === true ? 'DESC' : 'ASC');
-        }
-
-        return $query;
+        return self::sortByFilter($query, $request);
     }
 }

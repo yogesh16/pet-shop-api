@@ -36,7 +36,5 @@ class LoginSuccessful
 
         Mail::to($user->email)
             ->send(new UserLoginMail($user->fresh()));
-
-        Log::debug('[LoginEvent]', ['Last lgoin updated']);
     }
 }

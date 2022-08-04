@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Services\JWTService;
+use App\Traits\Filters;
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,6 +33,7 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
     use Uuids;
+    use Filters;
 
     /**
      * The attributes that are mass assignable.
@@ -168,7 +170,7 @@ class User extends Authenticatable
      *
      * @param string $value
      */
-    public function setPasswordAttribute(string $value)
+    public function setPasswordAttribute(string $value): void
     {
         $this->attributes['password'] = Hash::make($value);
     }
@@ -223,11 +225,7 @@ class User extends Authenticatable
             'marketing',
         ];
 
-        $data = Collection::make($request->all())->only($keys);
-
-        foreach ($data as $key => $value) {
-            $query->orWhere($key, 'LIKE', $value);
-        }
+        $query = self::commonFilter($query, $request, $keys);
 
         if ($request->has('created_at')) {
             $date = date('Y-m-d', strtotime($request->input('created_at')));
@@ -235,12 +233,6 @@ class User extends Authenticatable
             $query->orWhereDate('created_at', $date);
         }
 
-        if ($request->has('sortBy')) {
-            $isDesc = $request->has('desc') ? $request->input('desc') : false;
-
-            $query->orderBy($request->input('sortBy'), $isDesc === true ? 'DESC' : 'ASC');
-        }
-
-        return $query;
+        return self::sortByFilter($query, $request);
     }
 }

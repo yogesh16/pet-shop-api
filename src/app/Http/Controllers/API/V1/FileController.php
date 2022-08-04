@@ -117,9 +117,9 @@ class FileController extends BaseController
      *
      * @param string $uuid
      *
-     * @return StreamedResponse
+     * @return StreamedResponse|JsonResponse
      */
-    public function readFile(string $uuid): StreamedResponse
+    public function readFile(string $uuid): StreamedResponse|JsonResponse
     {
         //Get file
         $file = File::uuid($uuid)->first();

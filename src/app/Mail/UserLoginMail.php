@@ -24,7 +24,7 @@ class UserLoginMail extends Mailable
      *
      * @param User $user
      */
-    public function __construct(User $user)
+    public function __construct(?User $user)
     {
         $this->user = $user;
     }
@@ -43,6 +43,5 @@ class UserLoginMail extends Mailable
                 'ip' => request()->ip(),
                 'login_at' => $this->user->last_login_at->format('d-M-Y h:i A'),
             ]);
-        return $this->view('emails.user.login');
     }
 }

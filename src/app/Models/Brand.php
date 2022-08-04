@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Filters;
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,6 +23,7 @@ class Brand extends Model
 {
     use HasFactory;
     use Uuids;
+    use Filters;
 
     /**
      * The attributes that are mass assignable.
@@ -49,7 +51,7 @@ class Brand extends Model
      *
      * @param string $value
      */
-    public function setTitleAttribute(string $value)
+    public function setTitleAttribute(string $value): void
     {
         $this->attributes['title'] = $value;
 
@@ -65,12 +67,6 @@ class Brand extends Model
     {
         $query = Brand::query();
 
-        if ($request->has('sortBy')) {
-            $isDesc = $request->has('desc') ? $request->input('desc') : false;
-
-            $query->orderBy($request->input('sortBy'), $isDesc === true ? 'DESC' : 'ASC');
-        }
-
-        return $query;
+        return self::sortByFilter($query, $request);
     }
 }
