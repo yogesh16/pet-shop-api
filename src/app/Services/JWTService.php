@@ -73,8 +73,8 @@ class JWTService
     {
         $config = Configuration::forAsymmetricSigner(
             new Signer\Rsa\Sha256(),
-            InMemory::file(storage_path('app/key/jwtRS256.key')),
-            InMemory::file(storage_path('app/key/jwtRS256.key.pub'))
+            InMemory::file(base_path('key/jwtRS256.key')),
+            InMemory::file(base_path('key/jwtRS256.key.pub'))
         );
 
         $config->setValidationConstraints(
