@@ -20,10 +20,13 @@ This docker configuration contains
 Before run create ```mysql``` directory inside ```docker``` folder to persist data
 
 
-## Run Docker
+## Run Project using Docker
+
+Clone repo using following command
 
 ```bash
-  docker-compose up -d --build petshop
+  git clone https://github.com/yogesh16/pet-shop-api.git
+  cd pet-shop-api
 ```
 
 To start docker container
@@ -32,24 +35,57 @@ To start docker container
   docker-compose up -d --build petshop
 ```
 
-To install composer dependancy
+Install dependency
+
 ```bash
   docker-compose run --rm composer install
 ```
+
+Copy .env file
+
+```bash
+  cp src/.env.example src/.env
+```  
+
+Migrate database
+```bash
+  docker-compose run --rm artisan migrate --seed
+```
+
+ - Project URL : [```http://localhost:8088```](http://localhost:8088) 
+
+ - Swagger API Documentation : [```http://localhost:8088/api/swagger```](http://localhost:8088/api/swagger)
+
+ - Currency Exchange Swagger API Doc : [```http://localhost:8088/currency-exchange-rate/api/documentation```](http://localhost:8088/currency-exchange-rate/api/documentation)
+ 
+ - Maihog : [```http://localhost:9025```](http://localhost:9025)
+ 
+**Default Admin Credential**
+
+```
+Username: admin@petshop.com
+Password: password
+```
+
+## Running Tests
+
+To run tests
+
+```bash
+  docker-compose run --rm artisan test
+```
+
+
+## Useful Docker Commands
 
 To add new composer package
 ```bash
   docker-compose run --rm composer require package-name
 ```
 
-To install node dependancy
+To install node dependency
 ```bash
   docker-compose run --rm npm install
-```
-
-To migrate database
-```bash
-docker-compose run --rm artisan migrate
 ```
 
 To Run PHP Insights
